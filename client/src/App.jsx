@@ -115,10 +115,11 @@ export default function App() {
         verdictTitle: 'DOOMED: Connection Error',
         compositeScore: 0,
         message: 'Could not connect to the local astrological file engine.',
-        deltas: {
-          date: { guess: formData.guessDate, actual: 'Unknown', diffDays: 99, score: 0 },
-          time: { guess: formData.guessTime, actual: 'Unknown', diffMinutes: 99, score: 0 },
-          size: { guessBytes: formData.guessSize, actualBytes: 0, diffBytes: 0, score: 0 }
+        submissionDetails: {
+          guessDate: formData.guessDate || 'Unknown',
+          guessTime: formData.guessTime || 'Unknown',
+          guessSize: `${formData.guessSize || 0} ${formData.guessSizeUnit || 'bytes'}`,
+          psychicConfidence: `${formData.psychicConfidence || 65}%`
         }
       });
     } finally {

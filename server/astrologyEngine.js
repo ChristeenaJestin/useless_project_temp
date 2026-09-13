@@ -148,88 +148,11 @@ function generateOracleClue({ fileName, extension, birthDate, sizeBytes, zodiac 
   return parts.join(" ");
 }
 
-function evaluateAstrologicalGuesses({ fileName, actualBirthtime, actualBytes, guessDate, guessTime, guessSize, guessSizeUnit, action }) {
-  const actualDateObj = new Date(actualBirthtime);
-  
-  const actualYear = actualDateObj.getFullYear();
-  const actualMonth = String(actualDateObj.getMonth() + 1).padStart(2, '0');
-  const actualDay = String(actualDateObj.getDate()).padStart(2, '0');
-  const formattedActualDate = `${actualYear}-${actualMonth}-${actualDay}`;
-
-  const actualHours = String(actualDateObj.getHours()).padStart(2, '0');
-  const actualMins = String(actualDateObj.getMinutes()).padStart(2, '0');
-  const actualSecs = String(actualDateObj.getSeconds()).padStart(2, '0');
-  const formattedActualTime = `${actualHours}:${actualMins}:${actualSecs}`;
-
+function evaluateAstrologicalGuesses({ fileName, actualBirthtime, actualBytes, guessDate, guessTime, guessSize, guessSizeUnit, psychicConfidence, action }) {
+  const actualDateObj = new Date(actualBirthtime || Date.now());
   const zodiac = getZodiacSign(actualDateObj);
 
-  // 1. Date Diff
-  const userDateObj = new Date(guessDate + "T00:00:00Z");
-  const normalizedActualDate = new Date(`${formattedActualDate}T00:00:00Z`);
-  const diffTime = Math.abs(userDateObj - normalizedActualDate);
-  const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-
-  let dateScore = 0;
-  if (diffDays === 0) {
-    dateScore = 100;
-  } else if (diffDays <= 7) {
-    dateScore = Math.max(50, 100 - (diffDays * 7));
-  } else if (diffDays <= 30) {
-    dateScore = Math.max(20, 50 - ((diffDays - 7) * 1.3));
-  } else {
-    dateScore = Math.max(0, 20 - ((diffDays - 30) * 0.2));
-  }
-
-  // 2. Time Diff
-  function timeToSeconds(timeStr) {
-    if (!timeStr) return 0;
-    const parts = timeStr.split(":").map(Number);
-    return (parts[0] || 0) * 3600 + (parts[1] || 0) * 60 + (parts[2] || 0);
-  }
-
-  const actualTimeSec = timeToSeconds(formattedActualTime);
-  const userTimeSec = timeToSeconds(guessTime);
-  const diffSec = Math.abs(userTimeSec - actualTimeSec);
-  const diffMinutes = Math.round(diffSec / 60);
-
-  let timeScore = 0;
-  if (diffSec === 0) {
-    timeScore = 100;
-  } else if (diffSec <= 300) {
-    timeScore = Math.max(80, 100 - (diffSec / 300 * 20));
-  } else if (diffSec <= 3600) {
-    timeScore = Math.max(50, 80 - ((diffSec - 300) / 3300 * 30));
-  } else if (diffSec <= 21600) {
-    timeScore = Math.max(15, 50 - ((diffSec - 3600) / 18000 * 35));
-  } else {
-    timeScore = Math.max(0, 15 - ((diffSec - 21600) / 64800 * 15));
-  }
-
-  // 3. Size Diff
-  let userBytes = Number(guessSize) || 0;
-  if (guessSizeUnit === "KB") {
-    userBytes = Math.round(userBytes * 1024);
-  } else if (guessSizeUnit === "MB") {
-    userBytes = Math.round(userBytes * 1024 * 1024);
-  }
-
-  const sizeDiff = Math.abs(userBytes - actualBytes);
-  const relativeError = actualBytes > 0 ? sizeDiff / actualBytes : 1;
-
-  let sizeScore = 0;
-  if (sizeDiff === 0) {
-    sizeScore = 100;
-  } else if (relativeError <= 0.05) {
-    sizeScore = Math.max(85, 100 - (relativeError * 300));
-  } else if (relativeError <= 0.25) {
-    sizeScore = Math.max(55, 85 - ((relativeError - 0.05) * 150));
-  } else if (relativeError <= 1.0) {
-    sizeScore = Math.max(15, 55 - ((relativeError - 0.25) * 53));
-  } else {
-    sizeScore = Math.max(0, 15 - Math.min(15, (relativeError - 1.0) * 5));
-  }
-
-  // Equal probability random prediction (50% Lucky / Blessed, 50% Doomed / Unlucky)
+  // Pure 50/50 cosmic random probability - ZERO accuracy checking, delta scoring, or file size matching
   const isLucky = Math.random() < 0.5;
 
   let tier = "DOOMED";
@@ -260,25 +183,11 @@ function evaluateAstrologicalGuesses({ fileName, actualBirthtime, actualBytes, g
     message,
     action,
     fileName,
-    deltas: {
-      date: {
-        guess: guessDate,
-        actual: formattedActualDate,
-        diffDays,
-        score: Math.round(dateScore)
-      },
-      time: {
-        guess: guessTime,
-        actual: formattedActualTime,
-        diffMinutes,
-        score: Math.round(timeScore)
-      },
-      size: {
-        guessBytes: userBytes,
-        actualBytes,
-        diffBytes: sizeDiff,
-        score: Math.round(sizeScore)
-      }
+    submissionDetails: {
+      guessDate: String(guessDate || 'Undisclosed'),
+      guessTime: String(guessTime || 'Undisclosed'),
+      guessSize: `${guessSize !== undefined ? guessSize : 0} ${guessSizeUnit || 'bytes'}`,
+      psychicConfidence: `${psychicConfidence !== undefined ? psychicConfidence : 65}%`
     },
     celestialSummary: {
       sign: zodiac.sign,
@@ -287,6 +196,7 @@ function evaluateAstrologicalGuesses({ fileName, actualBirthtime, actualBytes, g
     }
   };
 }
+
 
 // 8 Cosmic Loophole Bypass Generators
 function generateBypassVerdict({ bypassType, fileName, payload = {} }) {
