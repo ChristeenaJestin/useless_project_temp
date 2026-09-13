@@ -24,14 +24,21 @@ export default function FileViewer({
 }) {
   if (!file) {
     return (
-      <main className="flex-1 h-full flex flex-col items-center justify-center p-8 bg-obsidian-900 bg-cosmic-grid relative text-center">
-        <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center mb-4 text-slate-600">
-          <Compass className="w-7 h-7 text-astral-purple/50 animate-spin-slow" />
+      <main className="flex-1 h-full flex flex-col items-center justify-center p-8 bg-obsidian-900 bg-cosmic-grid relative text-center overflow-hidden">
+        {/* Ambient Large Blended Zodiac Wheel */}
+        <div className="absolute w-[450px] h-[450px] pointer-events-none opacity-25 mix-blend-screen animate-celestial-drift [mask-image:radial-gradient(circle_at_center,black_50%,transparent_90%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_50%,transparent_90%)]">
+          <img src="/zodiac_wheel.jpg" alt="" className="w-full h-full object-cover filter contrast-125" />
         </div>
-        <h3 className="text-sm font-mono font-semibold text-slate-300">No File Selected</h3>
-        <p className="text-xs font-mono text-slate-500 max-w-sm mt-1">
-          Select any real file from your PC directory in the left explorer to inspect or initiate a psychic file operation.
-        </p>
+
+        <div className="relative z-10 flex flex-col items-center">
+          <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center mb-4 text-slate-600 shadow-cosmic-glow">
+            <Compass className="w-7 h-7 text-astral-purple/70 animate-spin-slow" />
+          </div>
+          <h3 className="text-sm font-mono font-semibold text-slate-200">No File Selected</h3>
+          <p className="text-xs font-mono text-slate-400 max-w-sm mt-1 leading-relaxed">
+            Select any real file from your PC in the left explorer to inspect its spiritual structure or initiate a psychic file operation.
+          </p>
+        </div>
       </main>
     );
   }
@@ -118,20 +125,29 @@ export default function FileViewer({
       <div className="flex-1 overflow-y-auto p-6">
         {!isOpen && (
           <div className="h-full flex flex-col items-center justify-center p-8 text-center animate-fade-in">
-            {/* Realistic Zodiac Wheel Display */}
-            <div className="relative w-44 h-44 mb-6 group">
-              <div className="absolute inset-0 rounded-full bg-astral-purple/20 blur-xl animate-pulse-slow pointer-events-none" />
-              <div className="relative w-full h-full rounded-full p-1 bg-gradient-to-tr from-astral-purple/40 via-astral-fuchsia/30 to-astral-cyan/40 border border-white/20 shadow-cosmic-glow overflow-hidden">
+            {/* Larger, Seamlessly Blended Zodiac Astrolabe */}
+            <div className="relative w-64 h-64 md:w-80 md:h-80 mb-6 flex items-center justify-center group">
+              {/* Pulsing Ambient Nebula Core */}
+              <div className="absolute inset-4 rounded-full bg-gradient-to-tr from-astral-purple/30 via-astral-fuchsia/20 to-astral-cyan/25 blur-2xl animate-pulse-slow pointer-events-none" />
+              
+              {/* Concentric Subtle Astrolabe Rings */}
+              <div className="absolute inset-0 rounded-full border border-astral-purple/30 animate-pulse pointer-events-none" />
+              <div className="absolute inset-4 rounded-full border border-astral-fuchsia/20 border-dashed animate-spin-slow pointer-events-none" />
+              <div className="absolute inset-8 rounded-full border border-cyan-400/20 pointer-events-none" />
+
+              {/* The Seamless Zodiac Image */}
+              <div className="relative w-full h-full rounded-full overflow-hidden [mask-image:radial-gradient(circle_at_center,black_55%,transparent_96%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_55%,transparent_96%)]">
                 <img 
                   src="/zodiac_wheel.jpg" 
                   alt="Celestial Zodiac Chart" 
-                  className="w-full h-full object-cover rounded-full filter contrast-125 brightness-95 transform transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover mix-blend-screen filter contrast-125 brightness-110 animate-celestial-drift transform transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 rounded-full border-2 border-astral-purple/30 pointer-events-none" />
               </div>
-              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-black/90 border border-astral-purple/50 text-[10px] font-mono text-astral-purple whitespace-nowrap shadow-lg flex items-center gap-1.5">
-                <Sparkles className="w-3 h-3" />
-                <span>Sign: {file.astrologicalSign}</span>
+
+              {/* Astrological Sign Badge */}
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-obsidian-900/90 border border-astral-purple/50 text-xs font-mono text-white whitespace-nowrap shadow-cosmic-glow flex items-center gap-2 z-10 backdrop-blur-md">
+                <Sparkles className="w-3.5 h-3.5 text-astral-purple animate-pulse" />
+                <span>Zodiac: <strong className="text-astral-purple">{file.astrologicalSign}</strong> ({file.element})</span>
               </div>
             </div>
 

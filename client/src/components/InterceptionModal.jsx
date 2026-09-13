@@ -115,14 +115,19 @@ export default function InterceptionModal({
         {/* Ambient Top Glow */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-astral-purple via-astral-fuchsia to-astral-cyan animate-aurora" />
 
+        {/* Large Ambient Synchronized Zodiac Wheel in Modal Backdrop */}
+        <div className="absolute -top-20 -right-20 w-96 h-96 pointer-events-none opacity-25 mix-blend-screen animate-celestial-drift [mask-image:radial-gradient(circle_at_center,black_45%,transparent_85%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_45%,transparent_85%)] z-0">
+          <img src="/zodiac_wheel.jpg" alt="" className="w-full h-full object-cover filter contrast-125" />
+        </div>
+
         {/* Modal Header */}
-        <div className="p-5 border-b border-white/[0.08] flex items-center justify-between bg-black/40">
-          <div className="flex items-center space-x-3">
-            <div className="relative w-12 h-12 rounded-full p-0.5 border border-astral-purple/50 shadow-cosmic-glow shrink-0 overflow-hidden">
+        <div className="p-5 border-b border-white/[0.08] flex items-center justify-between bg-black/40 relative z-10">
+          <div className="flex items-center space-x-3.5">
+            <div className="relative w-14 h-14 rounded-full p-0.5 border border-astral-purple/50 shadow-cosmic-glow shrink-0 overflow-hidden bg-black/50">
               <img 
                 src="/zodiac_wheel.jpg" 
                 alt="Zodiac Chart" 
-                className="w-full h-full object-cover rounded-full filter contrast-125 brightness-105"
+                className="w-full h-full object-cover rounded-full mix-blend-screen filter contrast-125 brightness-110"
               />
               <div className="absolute inset-0 rounded-full border border-astral-purple/40 pointer-events-none" />
             </div>

@@ -151,6 +151,11 @@ export default function App() {
       <div className="fixed inset-0 ambient-nebula pointer-events-none opacity-80" />
       <div className="fixed inset-0 bg-cosmic-grid pointer-events-none opacity-40" />
 
+      {/* Synchronized Ambient Celestial Zodiac Astrolabe */}
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[720px] pointer-events-none opacity-[0.08] mix-blend-screen animate-celestial-drift [mask-image:radial-gradient(circle_at_center,black_45%,transparent_85%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_45%,transparent_85%)] z-0">
+        <img src="/zodiac_wheel.jpg" alt="" className="w-full h-full object-cover filter contrast-125 brightness-110" />
+      </div>
+
       {/* Header Bar */}
       <Header
         currentDir={currentDir}

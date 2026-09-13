@@ -38,7 +38,8 @@ module.exports = {
         'glass-inner': 'inset 0 1px 1px 0 rgba(255, 255, 255, 0.12)'
       },
       animation: {
-        'spin-slow': 'spin 12s linear infinite',
+        'spin-slow': 'spin 20s linear infinite',
+        'celestial-drift': 'spin 90s linear infinite',
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'float': 'float 6s ease-in-out infinite',
         'aurora': 'aurora 8s ease infinite'
