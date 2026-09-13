@@ -61,17 +61,20 @@ npm run dev
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](screenshots/boot_loader.png)
-*Cosmic Splash Loader: Minimalist 4-second celestial initialization with AstroFS astrolabe emblem in Google Font Outfit*
+![Cosmic Splash Loader](screenshots/01_cosmic_splash_loader.png)
+*Cosmic Splash Loader: Minimalist 4-second celestial initialization screen displaying the glowing AstroLogo, Outfit typography, and smooth progress bar.*
 
-![Screenshot2](screenshots/file_explorer.png)
-*AstroFS Workspace: Real PC file explorer with zodiac classifications, planetary rulers, and file previews*
+![AstroFS Workspace & File Explorer](screenshots/02_astrological_file_workspace.png)
+*AstroFS Workspace: Real Windows PC file explorer displaying directory folders, celestial shrouding, and astrology birth chart metadata (Zodiac Sign, Element, Planetary Ruler).*
 
-![Screenshot3](screenshots/interception_modal.png)
-*Astrological Interrogation Modal: Collecting creation date, time, mass, and psychic confidence with pure 50/50 cosmic fate arbitration*
+![Astrological Interrogation Petition Form](screenshots/03_astrological_interrogation_form.png)
+*Astrological Interrogation Modal: Celestial checkpoint prompting the user to submit an astrological petition with intuited creation date, time, file mass, and psychic confidence slider.*
 
-![Screenshot4](screenshots/doom_bypass_rituals.png)
-*Ancient Rituals Chamber: Yes/No doom bypass prompt allowing file relocation, metamorphic zip/unzip transmutations, and coworker curse outsourcing*
+![Seraphic Resonance Lucky Verdict](screenshots/04_seraphic_verdict_petition.png)
+*Seraphic Resonance (Lucky Verdict): Pure 50/50 cosmic lot arbitration granting instant file decryption and displaying the registered astrological petition.*
+
+![Ancient Loophole Rituals Chamber](screenshots/05_cosmic_loophole_rituals.png)
+*Ancient Rituals Chamber: Interactive doom bypass options including Spatial Relocation (move/rename), Metamorphic Transmutation (ZIP/UNZIP), Karmic Outsourcing (send curse to coworker), and Chronological Exorcism.*
 
 # Diagrams
 ![Workflow](screenshots/workflow.png)
