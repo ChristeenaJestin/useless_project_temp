@@ -44,7 +44,7 @@ export default function Header({
       <div className="flex items-center space-x-3 shrink-0">
         <AstroLogo size="md" />
         <div>
-          <h1 className="text-base font-extrabold tracking-wider text-white font-syne flex items-center gap-1.5">
+          <h1 className="text-base font-extrabold tracking-wider text-white font-outfit flex items-center gap-1.5">
             AstroFS <span className="text-astral-purple font-mono font-normal text-[10px] px-1.5 py-0.5 rounded bg-astral-purple/15 border border-astral-purple/30">PC DRIVES & DESKTOP</span>
           </h1>
           <p className="text-[10px] text-slate-400 font-sans tracking-wide">

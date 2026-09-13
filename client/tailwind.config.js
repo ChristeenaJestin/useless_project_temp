@@ -27,9 +27,10 @@ module.exports = {
         }
       },
       fontFamily: {
-        syne: ['"Syne"', 'sans-serif'],
-        display: ['"Syne"', 'sans-serif'],
-        sans: ['"Inter"', 'system-ui', 'sans-serif'],
+        outfit: ['"Outfit"', 'sans-serif'],
+        display: ['"Outfit"', 'sans-serif'],
+        sans: ['"Outfit"', 'system-ui', 'sans-serif'],
+        syne: ['"Outfit"', 'sans-serif'],
         mono: ['"JetBrains Mono"', '"Fira Code"', 'Consolas', 'monospace'],
       },
       boxShadow: {

@@ -165,7 +165,7 @@ export default function CosmicSplashLoader({ onComplete }) {
             <Sparkles className="w-3 h-3 text-purple-300 animate-pulse" />
             Cosmic OS Gatekeeper Initialization
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-[0.25em] text-white font-syne drop-shadow-[0_0_25px_rgba(168,85,247,0.5)]">
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-[0.25em] text-white font-outfit drop-shadow-[0_0_25px_rgba(168,85,247,0.5)]">
             ASTROFS
           </h1>
           <p className="text-xs sm:text-sm font-mono text-slate-400 max-w-md mx-auto leading-relaxed">
