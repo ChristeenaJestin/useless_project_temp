@@ -11,7 +11,6 @@ import {
   Orbit, 
   Eye, 
   EyeOff, 
-  Trash2, 
   Sliders, 
   ChevronRight,
   FastForward,
@@ -227,8 +226,7 @@ export default function InterceptionModal({
 
   const actionLabels = {
     open: { label: "OPEN REAL FILE", color: "text-emerald-400", icon: Eye },
-    close: { label: "CLOSE FILE", color: "text-amber-400", icon: EyeOff },
-    delete: { label: "BANISH / DELETE REAL FILE", color: "text-rose-400", icon: Trash2 }
+    close: { label: "CLOSE FILE", color: "text-amber-400", icon: EyeOff }
   };
   const actionMeta = actionLabels[action] || actionLabels.open;
 

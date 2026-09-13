@@ -104,13 +104,6 @@ export default function App() {
               delete updated[formData.filePath];
               return updated;
             });
-          } else if (formData.action === 'delete') {
-            setOpenFiles(prev => {
-              const updated = { ...prev };
-              delete updated[formData.filePath];
-              return updated;
-            });
-            loadDirectory(currentDir);
           }
         }
       }
@@ -145,13 +138,6 @@ export default function App() {
         ...prev,
         [targetPath]: result.fileContent
       }));
-    } else if (action === 'delete') {
-      setOpenFiles(prev => {
-        const updated = { ...prev };
-        delete updated[file.path];
-        return updated;
-      });
-      loadDirectory(currentDir);
     } else if (action === 'close') {
       setOpenFiles(prev => {
         const updated = { ...prev };

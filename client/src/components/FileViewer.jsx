@@ -2,7 +2,6 @@ import React from 'react';
 import { 
   Lock, 
   Unlock, 
-  Trash2, 
   Eye, 
   EyeOff, 
   Sparkles, 
@@ -83,23 +82,12 @@ export default function FileViewer({
                 soundEffects.playClick();
                 onInterceptAction(file, 'close');
               }}
-              className="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-white/10 shadow-sm flex items-center space-x-1.5 transition-all"
+              className="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-white/10 shadow-sm flex items-center space-x-1.5 transition-all cursor-pointer"
             >
               <EyeOff className="w-3.5 h-3.5" />
               <span>Close File</span>
             </button>
           )}
-
-          <button
-            onClick={() => {
-              soundEffects.playClick();
-              onInterceptAction(file, 'delete');
-            }}
-            className="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 hover:text-rose-100 border border-rose-500/30 shadow-sm flex items-center space-x-1.5 transition-all"
-          >
-            <Trash2 className="w-3.5 h-3.5 text-rose-400" />
-            <span>Delete File</span>
-          </button>
         </div>
       </div>
 

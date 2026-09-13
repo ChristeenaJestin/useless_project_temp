@@ -226,19 +226,15 @@ app.post('/api/interrogate', (req, res) => {
       action
     });
 
+    if (action === 'delete') {
+      return res.status(403).json({ error: "File deletion is strictly disabled for celestial safety." });
+    }
+
     let fileContent = null;
 
     if (evaluation.allowed) {
       if (action === 'open') {
         fileContent = readFileContentHelper(filePath);
-      } else if (action === 'delete') {
-        // Safe deletion: move to local .astral_trash in user home
-        const trashDir = path.join(os.homedir(), '.astral_trash');
-        if (!fs.existsSync(trashDir)) {
-          fs.mkdirSync(trashDir, { recursive: true });
-        }
-        const destination = path.join(trashDir, `${Date.now()}_${fileName}`);
-        fs.renameSync(filePath, destination);
       }
     }
 
@@ -316,20 +312,15 @@ app.post('/api/bypass', (req, res) => {
       payload
     });
 
+    if (action === 'delete') {
+      return res.status(403).json({ error: "File deletion is strictly disabled for celestial safety." });
+    }
+
     // Execute the file operation
     let fileContent = null;
     if (action === 'open') {
       if (fs.existsSync(effectiveFilePath)) {
         fileContent = readFileContentHelper(effectiveFilePath);
-      }
-    } else if (action === 'delete') {
-      if (fs.existsSync(effectiveFilePath)) {
-        const trashDir = path.join(os.homedir(), '.astral_trash');
-        if (!fs.existsSync(trashDir)) {
-          fs.mkdirSync(trashDir, { recursive: true });
-        }
-        const destination = path.join(trashDir, `${Date.now()}_${path.basename(effectiveFilePath)}`);
-        fs.renameSync(effectiveFilePath, destination);
       }
     }
 

@@ -10,12 +10,11 @@ import {
   File, 
   Eye, 
   EyeOff, 
-  Trash2, 
   Search, 
   Monitor, 
   Download, 
-  HardDrive,
-  Lock,
+  HardDrive, 
+  Lock, 
   Unlock
 } from 'lucide-react';
 import { soundEffects } from './SoundFx';
@@ -235,21 +234,12 @@ export default function FileExplorer({
                     <button
                       onClick={() => onInterceptAction(item, 'close')}
                       title="Psychic Close"
-                      className="px-2 py-0.5 text-[10px] font-mono rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-white/10 flex items-center space-x-1 transition-all"
+                      className="px-2 py-0.5 text-[10px] font-mono rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-white/10 flex items-center space-x-1 transition-all cursor-pointer"
                     >
                       <EyeOff className="w-2.5 h-2.5" />
                       <span>Close</span>
                     </button>
                   )}
-
-                  {/* Action: Delete */}
-                  <button
-                    onClick={() => onInterceptAction(item, 'delete')}
-                    title="Psychic Delete"
-                    className="p-1 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded border border-transparent hover:border-rose-500/20 transition-all"
-                  >
-                    <Trash2 className="w-3 h-3" />
-                  </button>
                 </div>
               </div>
             </div>
