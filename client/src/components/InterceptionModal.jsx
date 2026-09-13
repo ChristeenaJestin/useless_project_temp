@@ -59,13 +59,8 @@ export default function InterceptionModal({
 
   const { file, action } = interception;
 
-  // Form states with default guesses
-  const [guessDate, setGuessDate] = useState('2024-01-01');
-  const [guessTime, setGuessTime] = useState('12:00:00');
-  const [guessSize, setGuessSize] = useState('1024');
-  const [guessSizeUnit, setGuessSizeUnit] = useState('bytes');
-  const [psychicConfidence, setPsychicConfidence] = useState(65);
   const [showOracleHint, setShowOracleHint] = useState(false);
+  const [optedForRitual, setOptedForRitual] = useState(false);
 
   // Multi-step loading stage index
   const [loadingStageIdx, setLoadingStageIdx] = useState(0);
@@ -120,16 +115,12 @@ export default function InterceptionModal({
     }
   }, [verdictResult]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleStartDivination = () => {
     soundEffects.playClick();
+    setOptedForRitual(false);
     onSubmitInterrogation({
       filePath: file.path,
-      action,
-      guessDate,
-      guessTime,
-      guessSize: Number(guessSize),
-      guessSizeUnit
+      action
     });
   };
 
@@ -277,109 +268,48 @@ export default function InterceptionModal({
         {/* Modal Body */}
         <div className="p-4 sm:p-6 max-h-[82vh] overflow-y-auto space-y-6">
 
-          {/* STAGE 1: THE PSYCHIC PREDICTION FORM */}
+          {/* STAGE 1: CELESTIAL FATE DIVINATION CHAMBER */}
           {!verdictResult && !isSubmitting && (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="p-3.5 rounded-xl bg-astral-purple/10 border border-astral-purple/20 text-xs font-mono text-slate-300 leading-relaxed flex items-start space-x-3">
-                <Orbit className="w-4 h-4 text-astral-purple shrink-0 mt-0.5 animate-spin-slow" />
-                <p>
-                  <strong>Celestial Gatekeeper Notice:</strong> To <span className={actionMeta.color}>{action}</span> this file on your PC, you must prove spiritual ownership. Input your psychic predictions of its exact birth coordinates and mass below:
-                </p>
+            <div className="space-y-5 animate-fade-in">
+              <div className="p-4 rounded-xl bg-astral-purple/10 border border-astral-purple/20 text-xs font-mono text-slate-300 leading-relaxed flex items-start space-x-3.5">
+                <Orbit className="w-5 h-5 text-astral-purple shrink-0 mt-0.5 animate-spin-slow" />
+                <div>
+                  <h3 className="font-bold text-white text-xs sm:text-sm">
+                    Celestial Fate Interrogation Chamber
+                  </h3>
+                  <p className="mt-1 text-slate-300">
+                    To <span className={actionMeta.color}>{action}</span> this file on your PC, you must face the cosmic gatekeeper. The stars will divine whether your aura is <strong>Blessed (Lucky)</strong> or <strong>Condemned (Doomed)</strong>.
+                  </p>
+                </div>
               </div>
 
-              {/* Guesses Container */}
-              <div className="space-y-4">
-                {/* Guess 1: Creation Date */}
-                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                  <div className="flex items-center justify-between text-xs font-mono">
-                    <label className="text-slate-300 font-semibold flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-sky-400" />
-                      <span>1. Psychic Guess: Exact Creation Date</span>
-                    </label>
-                    <span className="text-[10px] text-slate-500">YYYY-MM-DD</span>
-                  </div>
-                  <input
-                    type="date"
-                    required
-                    value={guessDate}
-                    onChange={(e) => setGuessDate(e.target.value)}
-                    className="w-full bg-black/60 border border-white/[0.1] focus:border-astral-purple rounded-lg px-3 py-2 text-xs font-mono text-white focus:outline-none focus:ring-1 focus:ring-astral-purple/40"
+              {/* Central Astral Identity Card */}
+              <div className="p-6 rounded-2xl bg-black/40 border border-white/[0.08] flex flex-col items-center justify-center text-center relative overflow-hidden shadow-cosmic-glow">
+                <div className="relative w-24 h-24 rounded-full p-1 border-2 border-amber-500/40 shadow-lucky-glow mb-3">
+                  <img 
+                    src="/solar_system.jpg" 
+                    alt="Solar System Astrolabe" 
+                    className="w-full h-full object-cover rounded-full mix-blend-screen filter contrast-125 animate-spin-slow"
                   />
+                  <div className="absolute inset-0 rounded-full border border-amber-400/50 pointer-events-none" />
                 </div>
 
-                {/* Guess 2: Creation Time */}
-                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                  <div className="flex items-center justify-between text-xs font-mono">
-                    <label className="text-slate-300 font-semibold flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-amber-400" />
-                      <span>2. Psychic Guess: Exact Creation Time</span>
-                    </label>
-                    <span className="text-[10px] text-slate-500">HH:MM:SS</span>
-                  </div>
-                  <input
-                    type="time"
-                    step="1"
-                    required
-                    value={guessTime}
-                    onChange={(e) => setGuessTime(e.target.value)}
-                    className="w-full bg-black/60 border border-white/[0.1] focus:border-astral-purple rounded-lg px-3 py-2 text-xs font-mono text-white focus:outline-none focus:ring-1 focus:ring-astral-purple/40"
-                  />
+                <div className="text-sm font-mono font-bold text-white flex items-center gap-1.5">
+                  <span>Target:</span>
+                  <span className="text-astral-purple">{file.name}</span>
                 </div>
 
-                {/* Guess 3: File Size */}
-                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                  <div className="flex items-center justify-between text-xs font-mono">
-                    <label className="text-slate-300 font-semibold flex items-center gap-2">
-                      <HardDrive className="w-4 h-4 text-purple-400" />
-                      <span>3. Psychic Guess: File Size</span>
-                    </label>
-                    <span className="text-[10px] text-slate-500">Bytes, KB, or MB</span>
-                  </div>
-
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="number"
-                      min="1"
-                      required
-                      value={guessSize}
-                      onChange={(e) => setGuessSize(e.target.value)}
-                      placeholder="e.g. 2048"
-                      className="flex-1 bg-black/60 border border-white/[0.1] focus:border-astral-purple rounded-lg px-3 py-2 text-xs font-mono text-white focus:outline-none focus:ring-1 focus:ring-astral-purple/40"
-                    />
-                    <select
-                      value={guessSizeUnit}
-                      onChange={(e) => setGuessSizeUnit(e.target.value)}
-                      className="bg-black/60 border border-white/[0.1] focus:border-astral-purple rounded-lg px-3 py-2 text-xs font-mono text-white focus:outline-none focus:ring-1 focus:ring-astral-purple/40"
-                    >
-                      <option value="bytes">Bytes</option>
-                      <option value="KB">KB</option>
-                      <option value="MB">MB</option>
-                    </select>
-                  </div>
+                <div className="flex items-center space-x-3 mt-2 text-xs font-mono text-slate-400">
+                  <span className="text-amber-400 font-semibold">{file.astrologicalSign}</span>
+                  <span>•</span>
+                  <span>{file.element}</span>
+                  <span>•</span>
+                  <span className="text-sky-400">{file.planetaryRuler}</span>
                 </div>
 
-                {/* Psychic Confidence Level */}
-                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                  <div className="flex items-center justify-between text-xs font-mono">
-                    <span className="text-slate-400 flex items-center gap-1.5">
-                      <Sliders className="w-3.5 h-3.5 text-astral-purple" />
-                      <span>Psychic Confidence</span>
-                    </span>
-                    <span className="text-astral-purple font-semibold">{psychicConfidence}% Intuitive</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="1"
-                    max="100"
-                    value={psychicConfidence}
-                    onChange={(e) => setPsychicConfidence(Number(e.target.value))}
-                    className="w-full accent-astral-purple cursor-pointer h-1.5 bg-black/40 rounded-lg"
-                  />
-                  <div className="flex justify-between text-[10px] font-mono text-slate-500">
-                    <span>Hazy Vision</span>
-                    <span>Direct Revelation</span>
-                  </div>
-                </div>
+                <p className="text-[11px] font-mono text-slate-400 max-w-md mt-2 italic">
+                  "No psychic math or dates required. Let the ancient stars determine your digital fortune."
+                </p>
               </div>
 
               {/* Optional Oracle Whisper Disclosure */}
@@ -388,7 +318,7 @@ export default function InterceptionModal({
                   <div className="flex items-center space-x-2">
                     <Sparkles className="w-3.5 h-3.5 text-astral-purple animate-pulse" />
                     <span className="text-xs font-mono font-semibold text-purple-300">
-                      Astral Oracle (Optional Hint)
+                      Astral Oracle (Optional Lore)
                     </span>
                   </div>
                   <button
@@ -397,7 +327,7 @@ export default function InterceptionModal({
                       soundEffects.playOracleHum();
                       setShowOracleHint(!showOracleHint);
                     }}
-                    className="px-2.5 py-1 rounded-lg bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-[11px] font-mono text-purple-200 transition-all flex items-center gap-1.5"
+                    className="px-2.5 py-1 rounded-lg bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-[11px] font-mono text-purple-200 transition-all flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>{showOracleHint ? "Conceal Oracle Prophecy" : "🔮 Consult Oracle Whisper"}</span>
                   </button>
@@ -421,9 +351,6 @@ export default function InterceptionModal({
                       <p className="text-xs font-mono text-purple-200/90 leading-relaxed italic">
                         "{file.oracleClue || oracleHint}"
                       </p>
-                      <div className="text-[9px] font-mono text-slate-500 mt-1">
-                        * Consulting the oracle is purely optional and does not affect your cosmic verdict score.
-                      </div>
                     </div>
                   </div>
                 )}
@@ -434,20 +361,21 @@ export default function InterceptionModal({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2 rounded-lg text-xs font-mono text-slate-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] transition-colors"
+                  className="px-4 py-2 rounded-lg text-xs font-mono text-slate-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
 
                 <button
-                  type="submit"
-                  className="px-5 py-2.5 rounded-xl font-mono text-xs font-semibold bg-gradient-to-r from-astral-purple via-astral-fuchsia to-indigo-600 hover:opacity-95 text-white shadow-cosmic-glow transition-all flex items-center gap-2 cursor-pointer"
+                  type="button"
+                  onClick={handleStartDivination}
+                  className="px-6 py-2.5 rounded-xl font-mono text-xs font-semibold bg-gradient-to-r from-astral-purple via-astral-fuchsia to-indigo-600 hover:opacity-95 text-white shadow-cosmic-glow transition-all flex items-center gap-2 cursor-pointer"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>Submit to Astrological Verdict</span>
+                  <span>🔮 Divine Astrological Verdict (Lucky or Doomed)</span>
                 </button>
               </div>
-            </form>
+            </div>
           )}
 
           {/* STAGE 2: LOADING ANIMATION */}
@@ -575,8 +503,57 @@ export default function InterceptionModal({
                 </div>
               )}
 
-              {/* RITUALISTIC BYPASSES: COSMIC LOOPHOLE SECTION (Displayed when DOOMED / unfavorable) */}
-              {!verdictResult.allowed && (
+              {/* YES / NO BYPASS CONFIRMATION DIALOG (Displayed when DOOMED and user hasn't opted in yet) */}
+              {!verdictResult.allowed && !optedForRitual && (
+                <div className="rounded-2xl border border-amber-500/40 bg-black/75 backdrop-blur-xl p-5 sm:p-6 shadow-2xl space-y-5 animate-fade-in">
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-300 shadow-lucky-glow shrink-0">
+                      <ShieldAlert className="w-7 h-7 text-amber-400 animate-pulse" />
+                    </div>
+                    <div className="space-y-1.5 flex-1 min-w-0">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-[10px] font-mono uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">
+                          COSMIC REJECTION DETECTED
+                        </span>
+                        <span className="text-xs font-mono text-slate-400">
+                          Bypass Decision Required
+                        </span>
+                      </div>
+                      <h3 className="text-base font-mono font-bold text-white leading-tight">
+                        Do you opt to bypass the doom through ancient rituals?
+                      </h3>
+                      <p className="text-xs font-mono text-slate-300 leading-relaxed">
+                        The stars have locked this file under a malevolent astral transit. However, cosmic loophole rituals exist—such as <strong className="text-emerald-300">relocating the file</strong>, performing an <strong className="text-purple-300">astral zip & unzip void purge</strong>, or <strong className="text-amber-300">transferring the curse to another person</strong>.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      className="w-full sm:w-auto px-5 py-2.5 rounded-xl font-mono text-xs text-slate-400 hover:text-white bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                    >
+                      <span>❌ No, Accept Defeat & Close</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        soundEffects.playClick();
+                        setOptedForRitual(true);
+                      }}
+                      className="w-full sm:w-auto px-6 py-2.5 rounded-xl font-mono text-xs font-bold bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:opacity-95 text-black shadow-lg shadow-amber-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Zap className="w-4 h-4" />
+                      <span>⚡ Yes, Proceed with Ancient Ritual</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* RITUALISTIC BYPASSES: COSMIC LOOPHOLE SECTION (Displayed when DOOMED and user opted for rituals) */}
+              {!verdictResult.allowed && optedForRitual && (
                 <div className="rounded-2xl border border-amber-500/40 bg-black/60 backdrop-blur-xl p-4 sm:p-5 shadow-2xl space-y-4 animate-fade-in">
                   {/* Bypass Header */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/[0.08] pb-3">
@@ -586,32 +563,33 @@ export default function InterceptionModal({
                       </div>
                       <div>
                         <h3 className="text-sm font-mono font-bold text-white flex items-center gap-2">
-                          <span>Cosmic Loopholes: Bypassing the Doom</span>
+                          <span>Cosmic Loopholes: Choose Your Ritual</span>
                           <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                            8 RITUALS READY
+                            RITUAL CHAMBER ACTIVE
                           </span>
                         </h3>
                         <p className="text-[11px] font-mono text-slate-400">
-                          The stars blocked your action, but the astrological matrix has legal loopholes:
+                          Execute any ancient rite below to purge the curse, reset your karma, and unlock the file:
                         </p>
                       </div>
                     </div>
 
-                    <div className="text-right shrink-0">
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded border uppercase tracking-wider ${
-                        verdictResult.compositeScore < 20 
-                          ? 'bg-rose-500/20 text-rose-300 border-rose-500/40' 
-                          : 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                      }`}>
-                        {verdictResult.compositeScore < 20 ? 'Catastrophic Doom' : 'Severe Karmic Debt'}
-                      </span>
+                    <div className="flex items-center space-x-2 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => setOptedForRitual(false)}
+                        className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-slate-300 border border-white/10 transition-all cursor-pointer"
+                      >
+                        ← Back to Choice
+                      </button>
                     </div>
                   </div>
 
                   {/* Filter Tabs */}
                   <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 text-[11px] font-mono">
                     {[
-                      { id: 'all', label: 'All 8 Rituals' },
+                      { id: 'all', label: 'All Rituals' },
+                      { id: 'featured', label: '⭐ Featured (Relocate / Zip / Send)' },
                       { id: 'time', label: '⏳ Spacetime & Physics' },
                       { id: 'corporate', label: '💼 Corporate & Social' },
                       { id: 'occult', label: '🔥 Altar & Dark Arts' }
@@ -623,7 +601,7 @@ export default function InterceptionModal({
                           soundEffects.playClick();
                           setActiveBypassTab(tab.id);
                         }}
-                        className={`px-2.5 py-1 rounded-lg transition-all shrink-0 ${
+                        className={`px-2.5 py-1 rounded-lg transition-all shrink-0 cursor-pointer ${
                           activeBypassTab === tab.id
                             ? 'bg-astral-purple text-white shadow-sm'
                             : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.05]'
@@ -634,16 +612,120 @@ export default function InterceptionModal({
                     ))}
                   </div>
 
-                  {/* 8 Interactive Bypass Cards Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[390px] overflow-y-auto pr-1">
+                  {/* Interactive Bypass Cards Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[420px] overflow-y-auto pr-1">
 
-                    {/* 1. Chronological Exorcism (Wait / Time-Shift) */}
+                    {/* 1. Spatial Relocation (Rename / Move to another location) */}
+                    {(activeBypassTab === 'all' || activeBypassTab === 'featured' || activeBypassTab === 'time') && (
+                      <div className="p-3.5 rounded-xl bg-white/[0.03] border border-emerald-500/30 hover:border-emerald-400 transition-all space-y-2.5 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center space-x-2 text-emerald-400 text-xs font-mono font-bold">
+                            <FolderInput className="w-4 h-4" />
+                            <span>1. Spatial Relocation (Move / Rename)</span>
+                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300">FEATURED</span>
+                          </div>
+                          <p className="text-[11px] font-mono text-slate-300 mt-1 leading-relaxed">
+                            Relocate or rename the physical file to a blessed name/path to completely wipe its karmic debt.
+                          </p>
+                        </div>
+                        <div className="space-y-1.5">
+                          <input
+                            type="text"
+                            value={relocationName}
+                            onChange={(e) => setRelocationName(e.target.value)}
+                            placeholder="New blessed filename..."
+                            className="w-full bg-black/60 border border-white/10 rounded-lg px-2.5 py-1 text-xs font-mono text-white focus:outline-none focus:border-emerald-400"
+                          />
+                          <button
+                            type="button"
+                            disabled={bypassing}
+                            onClick={() => handleExecuteBypass('spatial-relocation', { newName: relocationName })}
+                            className="w-full py-1.5 px-3 rounded-lg text-xs font-mono font-semibold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                          >
+                            <FolderInput className="w-3.5 h-3.5" />
+                            <span>Translocate & Reset Karma</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 2. Metamorphic Transmutation (Zip/Unzip) */}
+                    {(activeBypassTab === 'all' || activeBypassTab === 'featured' || activeBypassTab === 'occult') && (
+                      <div className="p-3.5 rounded-xl bg-white/[0.03] border border-purple-500/30 hover:border-purple-400 transition-all space-y-2.5 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center space-x-2 text-purple-400 text-xs font-mono font-bold">
+                            <Archive className="w-4 h-4" />
+                            <span>2. Metamorphic Transmutation (Zip & Unzip)</span>
+                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-purple-500/20 text-purple-300">FEATURED</span>
+                          </div>
+                          <p className="text-[11px] font-mono text-slate-300 mt-1 leading-relaxed">
+                            Compress the entity into a ZIP void archive and extract it back, purging the natal birth aura to reset as a Newborn entity.
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          disabled={bypassing}
+                          onClick={() => handleExecuteBypass('transmutation')}
+                          className="w-full py-1.5 px-3 rounded-lg text-xs font-mono font-semibold bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-400/40 shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                        >
+                          <Archive className="w-3.5 h-3.5" />
+                          <span>📦 Purge Natal Aura (Simulate Zip & Unzip)</span>
+                        </button>
+                      </div>
+                    )}
+
+                    {/* 3. Karmic Outsourcing (Send to Another Person) */}
+                    {(activeBypassTab === 'all' || activeBypassTab === 'featured' || activeBypassTab === 'corporate') && (
+                      <div className="p-3.5 rounded-xl bg-white/[0.03] border border-amber-500/30 hover:border-amber-400 transition-all space-y-2.5 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center space-x-2 text-amber-400 text-xs font-mono font-bold">
+                            <Share2 className="w-4 h-4" />
+                            <span>3. Karmic Outsourcing (Send to Another Person)</span>
+                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300">FEATURED</span>
+                          </div>
+                          <p className="text-[11px] font-mono text-slate-300 mt-1 leading-relaxed">
+                            Generate an astrological curse transfer link to shift the bad karma onto an innocent friend or coworker.
+                          </p>
+                        </div>
+                        <div className="space-y-1.5">
+                          <input
+                            type="email"
+                            value={curseCoworker}
+                            onChange={(e) => setCurseCoworker(e.target.value)}
+                            placeholder="coworker@company.internal"
+                            className="w-full bg-black/60 border border-white/10 rounded-lg px-2.5 py-1 text-xs font-mono text-white focus:outline-none focus:border-amber-400"
+                          />
+                          {curseLink ? (
+                            <button
+                              type="button"
+                              onClick={copyCurseLink}
+                              className="w-full py-1.5 px-3 rounded-lg text-xs font-mono font-semibold bg-amber-500/30 text-amber-200 border border-amber-400/40 flex items-center justify-center gap-1.5 cursor-pointer"
+                            >
+                              {curseCopied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                              <span>{curseCopied ? "Curse Link Copied!" : "Copy Curse Transfer Link"}</span>
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              disabled={bypassing}
+                              onClick={triggerCurseDispatch}
+                              className="w-full py-1.5 px-3 rounded-lg text-xs font-mono font-semibold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/40 shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                            >
+                              <Share2 className="w-3.5 h-3.5" />
+                              <span>Dispatch Curse Link to Another Person</span>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 4. Chronological Exorcism (Wait / Time-Shift) */}
                     {(activeBypassTab === 'all' || activeBypassTab === 'time') && (
                       <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-sky-400/40 transition-all space-y-2.5 flex flex-col justify-between">
                         <div>
                           <div className="flex items-center space-x-2 text-sky-400 text-xs font-mono font-bold">
                             <FastForward className="w-4 h-4" />
-                            <span>1. Chronological Exorcism</span>
+                            <span>4. Chronological Exorcism</span>
                           </div>
                           <p className="text-[11px] font-mono text-slate-300 mt-1 leading-relaxed">
                             Fast-forward spacetime by 30 celestial minutes to push Mars out of retrograde.
@@ -677,132 +759,7 @@ export default function InterceptionModal({
                       </div>
                     )}
 
-                    {/* 2. Spatial Relocation (Rename / Move) */}
-                    {(activeBypassTab === 'all' || activeBypassTab === 'time') && (
-                      <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-emerald-400/40 transition-all space-y-2.5 flex flex-col justify-between">
-                        <div>
-                          <div className="flex items-center space-x-2 text-emerald-400 text-xs font-mono font-bold">
-                            <FolderInput className="w-4 h-4" />
-                            <span>2. Spatial Relocation</span>
-                          </div>
-                          <p className="text-[11px] font-mono text-slate-300 mt-1 leading-relaxed">
-                            Rename or translocate the physical file to wipe its karmic soul-debt.
-                          </p>
-                        </div>
-                        <div className="space-y-1.5">
-                          <input
-                            type="text"
-                            value={relocationName}
-                            onChange={(e) => setRelocationName(e.target.value)}
-                            placeholder="New blessed filename..."
-                            className="w-full bg-black/60 border border-white/10 rounded-lg px-2.5 py-1 text-xs font-mono text-white focus:outline-none focus:border-emerald-400"
-                          />
-                          <button
-                            type="button"
-                            disabled={bypassing}
-                            onClick={() => handleExecuteBypass('spatial-relocation', { newName: relocationName })}
-                            className="w-full py-1.5 px-3 rounded-lg text-xs font-mono font-semibold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                          >
-                            <FolderInput className="w-3.5 h-3.5" />
-                            <span>Translocate & Reset Karma</span>
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* 3. Metamorphic Transmutation (Zip/Unzip) */}
-                    {(activeBypassTab === 'all' || activeBypassTab === 'occult') && (
-                      <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-purple-400/40 transition-all space-y-2.5 flex flex-col justify-between">
-                        <div>
-                          <div className="flex items-center space-x-2 text-purple-400 text-xs font-mono font-bold">
-                            <Archive className="w-4 h-4" />
-                            <span>3. Metamorphic Transmutation</span>
-                          </div>
-                          <p className="text-[11px] font-mono text-slate-300 mt-1 leading-relaxed">
-                            Compress into zip void and extract, purging the natal birth aura to reset as a Newborn entity.
-                          </p>
-                        </div>
-                        <button
-                          type="button"
-                          disabled={bypassing}
-                          onClick={() => handleExecuteBypass('transmutation')}
-                          className="w-full py-1.5 px-3 rounded-lg text-xs font-mono font-semibold bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-400/40 shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                        >
-                          <Archive className="w-3.5 h-3.5" />
-                          <span>📦 Purge Natal Aura (Simulate Zip)</span>
-                        </button>
-                      </div>
-                    )}
-
-                    {/* 4. Karmic Outsourcing (Send to Another Person) */}
-                    {(activeBypassTab === 'all' || activeBypassTab === 'corporate') && (
-                      <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-amber-400/40 transition-all space-y-2.5 flex flex-col justify-between">
-                        <div>
-                          <div className="flex items-center space-x-2 text-amber-400 text-xs font-mono font-bold">
-                            <Share2 className="w-4 h-4" />
-                            <span>4. Karmic Outsourcing</span>
-                          </div>
-                          <p className="text-[11px] font-mono text-slate-300 mt-1 leading-relaxed">
-                            Generate a curse transfer link to shift the bad luck onto an innocent coworker.
-                          </p>
-                        </div>
-                        <div className="space-y-1.5">
-                          <input
-                            type="email"
-                            value={curseCoworker}
-                            onChange={(e) => setCurseCoworker(e.target.value)}
-                            placeholder="coworker@company.internal"
-                            className="w-full bg-black/60 border border-white/10 rounded-lg px-2.5 py-1 text-xs font-mono text-white focus:outline-none focus:border-amber-400"
-                          />
-                          {curseLink ? (
-                            <button
-                              type="button"
-                              onClick={copyCurseLink}
-                              className="w-full py-1.5 px-3 rounded-lg text-xs font-mono font-semibold bg-amber-500/30 text-amber-200 border border-amber-400/40 flex items-center justify-center gap-1.5 cursor-pointer"
-                            >
-                              {curseCopied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                              <span>{curseCopied ? "Curse Link Copied!" : "Copy Curse Transfer Link"}</span>
-                            </button>
-                          ) : (
-                            <button
-                              type="button"
-                              disabled={bypassing}
-                              onClick={triggerCurseDispatch}
-                              className="w-full py-1.5 px-3 rounded-lg text-xs font-mono font-semibold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/40 shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                            >
-                              <Share2 className="w-3.5 h-3.5" />
-                              <span>Dispatch Curse Link</span>
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* 5. Malicious Compliance (Corrupt the File) */}
-                    {(activeBypassTab === 'all' || activeBypassTab === 'occult') && (
-                      <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-rose-400/40 transition-all space-y-2.5 flex flex-col justify-between">
-                        <div>
-                          <div className="flex items-center space-x-2 text-rose-400 text-xs font-mono font-bold">
-                            <Skull className="w-4 h-4" />
-                            <span>5. Malicious Compliance</span>
-                          </div>
-                          <p className="text-[11px] font-mono text-slate-300 mt-1 leading-relaxed">
-                            Simulate header bit-rot lobotomy: you can't ruin what is already dead.
-                          </p>
-                        </div>
-                        <button
-                          type="button"
-                          disabled={bypassing}
-                          onClick={() => handleExecuteBypass('malicious-compliance')}
-                          className="w-full py-1.5 px-3 rounded-lg text-xs font-mono font-semibold bg-rose-950/50 hover:bg-rose-900/70 text-rose-200 border border-rose-500/40 shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                        >
-                          <Skull className="w-3.5 h-3.5 text-rose-400" />
-                          <span>Perform Self-Lobotomy (Bit-Rot)</span>
-                        </button>
-                      </div>
-                    )}
-
-                    {/* 6. The Sacrificial Offering (Altar of the Gods) */}
+                    {/* 5. The Sacrificial Offering (Altar of the Gods) */}
                     {(activeBypassTab === 'all' || activeBypassTab === 'occult') && (
                       <div 
                         onDragOver={(e) => e.preventDefault()}
@@ -812,7 +769,7 @@ export default function InterceptionModal({
                         <div>
                           <div className="flex items-center space-x-2 text-orange-400 text-xs font-mono font-bold">
                             <Flame className={`w-4 h-4 ${isSacrificing ? 'animate-bounce text-amber-300' : ''}`} />
-                            <span>6. The Sacrificial Offering</span>
+                            <span>5. The Sacrificial Offering</span>
                           </div>
                           <p className="text-[11px] font-mono text-slate-300 mt-1 leading-relaxed">
                             Drop a disposable file or offer virtual node_modules to appease the zodiac deities.
@@ -835,6 +792,51 @@ export default function InterceptionModal({
                               <span>🔥 Sacrifice node_modules Cache</span>
                             </button>
                           )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 6. The Corporate Bribe (Developer Excuse) */}
+                    {(activeBypassTab === 'all' || activeBypassTab === 'corporate') && (
+                      <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-indigo-400/40 transition-all space-y-2.5 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center space-x-2 text-indigo-400 text-xs font-mono font-bold">
+                            <Briefcase className="w-4 h-4" />
+                            <span>6. The Corporate Bribe</span>
+                          </div>
+                          <p className="text-[11px] font-mono text-slate-300 mt-1 leading-relaxed">
+                            Submit a classic developer excuse to obtain an astrological corporate waiver.
+                          </p>
+                        </div>
+                        <div className="space-y-1.5">
+                          <input
+                            type="text"
+                            value={excuseText}
+                            onChange={(e) => setExcuseText(e.target.value)}
+                            placeholder="Type developer excuse..."
+                            className="w-full bg-black/60 border border-white/10 rounded-lg px-2.5 py-1 text-xs font-mono text-white focus:outline-none focus:border-indigo-400"
+                          />
+                          <div className="flex flex-wrap gap-1">
+                            {CORPORATE_EXCUSES.map(excuse => (
+                              <button
+                                key={excuse}
+                                type="button"
+                                onClick={() => setExcuseText(excuse)}
+                                className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/[0.04] hover:bg-white/[0.1] text-slate-400 hover:text-white border border-white/[0.05] transition-all cursor-pointer"
+                              >
+                                {excuse}
+                              </button>
+                            ))}
+                          </div>
+                          <button
+                            type="button"
+                            disabled={bypassing}
+                            onClick={() => handleExecuteBypass('corporate-bribe', { excuse: excuseText })}
+                            className="w-full py-1.5 px-3 rounded-lg text-xs font-mono font-semibold bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-400/40 shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                          >
+                            <Briefcase className="w-3.5 h-3.5" />
+                            <span>Bribe Celestial Gatekeeper</span>
+                          </button>
                         </div>
                       </div>
                     )}
@@ -866,48 +868,27 @@ export default function InterceptionModal({
                       </div>
                     )}
 
-                    {/* 8. The Corporate Bribe (Developer Excuse) */}
-                    {(activeBypassTab === 'all' || activeBypassTab === 'corporate') && (
-                      <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-indigo-400/40 transition-all space-y-2.5 flex flex-col justify-between">
+                    {/* 8. Malicious Compliance (Corrupt the File) */}
+                    {(activeBypassTab === 'all' || activeBypassTab === 'occult') && (
+                      <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-rose-400/40 transition-all space-y-2.5 flex flex-col justify-between">
                         <div>
-                          <div className="flex items-center space-x-2 text-indigo-400 text-xs font-mono font-bold">
-                            <Briefcase className="w-4 h-4" />
-                            <span>8. The Corporate Bribe</span>
+                          <div className="flex items-center space-x-2 text-rose-400 text-xs font-mono font-bold">
+                            <Skull className="w-4 h-4" />
+                            <span>8. Malicious Compliance</span>
                           </div>
                           <p className="text-[11px] font-mono text-slate-300 mt-1 leading-relaxed">
-                            Submit a classic developer excuse to obtain an astrological corporate waiver.
+                            Simulate header bit-rot lobotomy: you can't ruin what is already dead.
                           </p>
                         </div>
-                        <div className="space-y-1.5">
-                          <input
-                            type="text"
-                            value={excuseText}
-                            onChange={(e) => setExcuseText(e.target.value)}
-                            placeholder="Type developer excuse..."
-                            className="w-full bg-black/60 border border-white/10 rounded-lg px-2.5 py-1 text-xs font-mono text-white focus:outline-none focus:border-indigo-400"
-                          />
-                          <div className="flex flex-wrap gap-1">
-                            {CORPORATE_EXCUSES.map(excuse => (
-                              <button
-                                key={excuse}
-                                type="button"
-                                onClick={() => setExcuseText(excuse)}
-                                className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/[0.04] hover:bg-white/[0.1] text-slate-400 hover:text-white border border-white/[0.05] transition-all"
-                              >
-                                {excuse}
-                              </button>
-                            ))}
-                          </div>
-                          <button
-                            type="button"
-                            disabled={bypassing}
-                            onClick={() => handleExecuteBypass('corporate-bribe', { excuse: excuseText })}
-                            className="w-full py-1.5 px-3 rounded-lg text-xs font-mono font-semibold bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-400/40 shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                          >
-                            <Briefcase className="w-3.5 h-3.5" />
-                            <span>Bribe Celestial Gatekeeper</span>
-                          </button>
-                        </div>
+                        <button
+                          type="button"
+                          disabled={bypassing}
+                          onClick={() => handleExecuteBypass('malicious-compliance')}
+                          className="w-full py-1.5 px-3 rounded-lg text-xs font-mono font-semibold bg-rose-950/50 hover:bg-rose-900/70 text-rose-200 border border-rose-500/40 shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                        >
+                          <Skull className="w-3.5 h-3.5 text-rose-400" />
+                          <span>Perform Self-Lobotomy (Bit-Rot)</span>
+                        </button>
                       </div>
                     )}
 
@@ -918,7 +899,11 @@ export default function InterceptionModal({
               {/* Action Outcome & Dismiss Button */}
               <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between">
                 <span className="text-[11px] font-mono text-slate-500">
-                  {verdictResult.allowed ? "Astrological checkpoint resolved." : "Action currently locked under the stars."}
+                  {verdictResult.allowed 
+                    ? "Astrological checkpoint resolved." 
+                    : optedForRitual 
+                    ? "Ritual active: Select an ancient bypass to unlock the file." 
+                    : "Action currently locked under the stars."}
                 </span>
 
                 <div className="flex items-center space-x-2">
@@ -940,14 +925,14 @@ export default function InterceptionModal({
                       </span>
                       <ChevronRight className="w-4 h-4" />
                     </button>
-                  ) : (
+                  ) : optedForRitual ? (
                     <button
                       onClick={onClose}
-                      className="px-5 py-2.5 rounded-xl font-mono text-xs font-semibold bg-rose-900/60 hover:bg-rose-900 text-rose-200 border border-rose-500/40 shadow-doomed-glow transition-all flex items-center gap-2 cursor-pointer"
+                      className="px-4 py-2 rounded-lg font-mono text-xs text-slate-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] transition-all cursor-pointer"
                     >
-                      <span>Accept Defeat & Close</span>
+                      <span>Cancel & Close</span>
                     </button>
-                  )}
+                  ) : null}
                 </div>
               </div>
             </div>

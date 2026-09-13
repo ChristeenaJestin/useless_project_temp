@@ -348,10 +348,54 @@ function generateBypassVerdict({ bypassType, fileName, payload = {} }) {
   };
 }
 
+// Pure Celestial Fate Divination (Random Lucky vs. Doomed with satirical verdicts)
+function divineRandomVerdict({ fileName, actualBirthtime, actualBytes, action }) {
+  const actualDateObj = new Date(actualBirthtime || Date.now());
+  const zodiac = getZodiacSign(actualDateObj);
+
+  // 45% Lucky, 55% Doomed
+  const isLucky = Math.random() < 0.45;
+
+  if (isLucky) {
+    const score = Math.floor(Math.random() * 20) + 80; // 80 - 99
+    return {
+      tier: "LUCKY",
+      allowed: true,
+      verdictTitle: "LUCKY: Seraphic Resonance & Cosmic Blessing",
+      compositeScore: score,
+      message: BLESSINGS[Math.floor(Math.random() * BLESSINGS.length)],
+      action,
+      fileName,
+      celestialSummary: {
+        sign: zodiac.sign,
+        ruler: zodiac.ruler,
+        element: zodiac.element
+      }
+    };
+  } else {
+    const score = Math.floor(Math.random() * 25) + 5; // 5 - 30
+    return {
+      tier: "DOOMED",
+      allowed: false,
+      verdictTitle: "DOOMED: Astral Rejection & Cosmic Curse",
+      compositeScore: score,
+      message: GASLIGHTING_CONDEMNATIONS[Math.floor(Math.random() * GASLIGHTING_CONDEMNATIONS.length)],
+      action,
+      fileName,
+      celestialSummary: {
+        sign: zodiac.sign,
+        ruler: zodiac.ruler,
+        element: zodiac.element
+      }
+    };
+  }
+}
+
 module.exports = {
   getZodiacSign,
   generateOracleClue,
   evaluateAstrologicalGuesses,
-  generateBypassVerdict
+  generateBypassVerdict,
+  divineRandomVerdict
 };
 

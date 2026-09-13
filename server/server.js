@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
-const { evaluateAstrologicalGuesses, getZodiacSign, generateOracleClue, generateBypassVerdict } = require('./astrologyEngine');
+const { evaluateAstrologicalGuesses, getZodiacSign, generateOracleClue, generateBypassVerdict, divineRandomVerdict } = require('./astrologyEngine');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -193,9 +193,9 @@ app.get('/api/file-content', (req, res) => {
 app.post('/api/interrogate', (req, res) => {
   const { filePath, action, guessDate, guessTime, guessSize, guessSizeUnit } = req.body;
 
-  if (!filePath || !action || !guessDate || !guessTime || guessSize === undefined) {
+  if (!filePath || !action) {
     return res.status(400).json({
-      error: "Incomplete psychic prediction. Please input date, time, and size."
+      error: "Missing required file target or action for astrological interrogation."
     });
   }
 
@@ -215,16 +215,27 @@ app.post('/api/interrogate', (req, res) => {
       : stat.mtime;
     const actualBytes = stat.size;
 
-    const evaluation = evaluateAstrologicalGuesses({
-      fileName,
-      actualBirthtime,
-      actualBytes,
-      guessDate,
-      guessTime,
-      guessSize,
-      guessSizeUnit: guessSizeUnit || "bytes",
-      action
-    });
+    let evaluation;
+    // If explicit guesses are passed (legacy/testing), evaluate deltas; otherwise divine celestial fate randomly
+    if (guessDate && guessTime && guessSize !== undefined) {
+      evaluation = evaluateAstrologicalGuesses({
+        fileName,
+        actualBirthtime,
+        actualBytes,
+        guessDate,
+        guessTime,
+        guessSize,
+        guessSizeUnit: guessSizeUnit || "bytes",
+        action
+      });
+    } else {
+      evaluation = divineRandomVerdict({
+        fileName,
+        actualBirthtime,
+        actualBytes,
+        action
+      });
+    }
 
     if (action === 'delete') {
       return res.status(403).json({ error: "File deletion is strictly disabled for celestial safety." });
