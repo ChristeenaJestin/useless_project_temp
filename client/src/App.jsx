@@ -3,6 +3,7 @@ import Header from './components/Header';
 import FileExplorer from './components/FileExplorer';
 import FileViewer from './components/FileViewer';
 import InterceptionModal from './components/InterceptionModal';
+import CosmicBackground from './components/CosmicBackground';
 import { soundEffects } from './components/SoundFx';
 
 export default function App() {
@@ -147,14 +148,8 @@ export default function App() {
 
   return (
     <div className="h-screen w-screen flex flex-col bg-obsidian-950 text-slate-200 overflow-hidden font-sans relative">
-      {/* Background Ambience */}
-      <div className="fixed inset-0 ambient-nebula pointer-events-none opacity-80" />
-      <div className="fixed inset-0 bg-cosmic-grid pointer-events-none opacity-40" />
-
-      {/* Synchronized Ambient Celestial Zodiac Astrolabe */}
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[720px] pointer-events-none opacity-[0.08] mix-blend-screen animate-celestial-drift [mask-image:radial-gradient(circle_at_center,black_45%,transparent_85%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_45%,transparent_85%)] z-0">
-        <img src="/zodiac_wheel.jpg" alt="" className="w-full h-full object-cover filter contrast-125 brightness-110" />
-      </div>
+      {/* Animated Cosmic Background with Faded Zodiac Astrolabe, Twinkling Stars & Meteors */}
+      <CosmicBackground />
 
       {/* Header Bar */}
       <Header
