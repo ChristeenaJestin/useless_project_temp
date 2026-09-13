@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { soundEffects } from './SoundFx';
+import AstroLogo from './AstroLogo';
 
 const LOADING_STAGES = [
   "Consulting the astral plane...",
@@ -456,10 +457,8 @@ export default function InterceptionModal({
           {/* STAGE 2: LOADING ANIMATION */}
           {isSubmitting && (
             <div className="py-12 flex flex-col items-center justify-center text-center space-y-6">
-              <div className="relative w-20 h-20 flex items-center justify-center">
-                <div className="absolute inset-0 rounded-full border-2 border-astral-purple/20 border-t-astral-purple animate-spin" />
-                <div className="absolute inset-2 rounded-full border-2 border-astral-fuchsia/20 border-b-astral-fuchsia animate-spin-slow" />
-                <Orbit className="w-7 h-7 text-astral-purple animate-pulse" />
+              <div className="relative flex items-center justify-center">
+                <AstroLogo size="lg" showStatus={false} />
               </div>
 
               <div className="space-y-2">

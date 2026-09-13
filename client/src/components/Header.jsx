@@ -10,6 +10,7 @@ import {
   HardDrive,
   Check
 } from 'lucide-react';
+import AstroLogo from './AstroLogo';
 
 const LOCATION_ICONS = {
   Monitor,
@@ -41,10 +42,7 @@ export default function Header({
     <header className="h-16 px-4 border-b border-white/[0.08] glass-panel flex items-center justify-between z-30 relative shrink-0">
       {/* Brand & Project Identity */}
       <div className="flex items-center space-x-3 shrink-0">
-        <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-astral-purple/30 to-astral-fuchsia/20 border border-astral-purple/40 shadow-cosmic-glow">
-          <Orbit className="w-5 h-5 text-astral-purple animate-spin-slow" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-astral-emerald animate-pulse"></span>
-        </div>
+        <AstroLogo size="md" />
         <div>
           <h1 className="text-base font-extrabold tracking-wider text-white font-syne flex items-center gap-1.5">
             AstroFS <span className="text-astral-purple font-mono font-normal text-[10px] px-1.5 py-0.5 rounded bg-astral-purple/15 border border-astral-purple/30">PC DRIVES & DESKTOP</span>
