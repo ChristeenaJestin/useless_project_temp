@@ -7,23 +7,27 @@ export default function CosmicSplashLoader({ onComplete }) {
   const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
-    let currentP = 0;
-    const interval = setInterval(() => {
-      currentP += Math.floor(Math.random() * 3) + 2;
+    const TOTAL_DURATION = 4000; // Exactly 4 seconds duration
+    const startTime = Date.now();
 
-      if (currentP >= 100) {
-        currentP = 100;
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const currentProgress = Math.min(100, Math.floor((elapsed / TOTAL_DURATION) * 100));
+
+      setProgress(currentProgress);
+
+      if (elapsed >= TOTAL_DURATION) {
         clearInterval(interval);
+        setProgress(100);
         soundEffects.playBootChime();
         setTimeout(() => {
           setIsExiting(true);
           setTimeout(() => {
             if (onComplete) onComplete();
           }, 500);
-        }, 250);
+        }, 300);
       }
-      setProgress(currentP);
-    }, 30);
+    }, 35);
 
     const handleKeyDown = (e) => {
       if (e.code === 'Space' || e.key === 'Escape' || e.key === 'Enter') {
