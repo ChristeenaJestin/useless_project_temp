@@ -10,18 +10,18 @@
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: Chisteena Jestin- School Of Engineering, CUSAT
+- Member 2: Angelina Mary Geo - School Of Engineering, CUSAT
+
 
 ### Project Description
-[2-3 lines about what your project does]
+This app is for those who like wasting time, and scrolling through reels, but in a way that they can convince themselves that it's productive. Our app helps you do that by solving the problem of 'I need to do something productive but I also want to scroll through reels'.
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+We live in a world full of productivity gurus, time management experts, and life coaches telling us to focus, optimize, and be our best selves. But what if you don't want to be your best self? What if you just want to scroll through reels without the crushing guilt? What if you want to be productive, but only on your own terms? Enter Astral Archive, the app that helps you be your worst self, but in a way that you can convince yourself it's productive.
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+Astral Archive is a productivity app that helps you be your worst self, but in a way that you can convince yourself it's productive. Our app helps you do that by solving the problem of 'I need to do something productive but I also want to scroll through reels'.
 
 ## Technical Details
 ### Technologies/Components Used
