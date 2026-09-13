@@ -1,5 +1,4 @@
-// Astrological Verdict Engine for Real PC Files
-// Dynamically maps real file birthtimes to astrological zodiac signs and computes predictive deltas.
+// Astrological Verdict Engine & File-Specific Oracle Generator for Real PC Files
 
 const BLESSINGS = [
   "✨ COSMIC BLESSING GRANTED: The alignment of your compiler and the astral plane is immaculate! The file submits to your radiant spiritual will.",
@@ -23,7 +22,6 @@ const GASLIGHTING_CONDEMNATIONS = [
   "🧘 CHAKRA MISALIGNMENT ERROR 403: The file has filed a restraining order against your mouse cursor on grounds of psychic incompatibility."
 ];
 
-// Helper to determine true zodiac sign from a Date object
 function getZodiacSign(date) {
   const month = date.getMonth() + 1; // 1 - 12
   const day = date.getDate();
@@ -55,16 +53,109 @@ function getZodiacSign(date) {
   }
 }
 
+// Generate unique, contextual, and satirical oracle whispers for different files
+function generateOracleClue({ fileName, extension, birthDate, sizeBytes, zodiac }) {
+  const lowerName = fileName.toLowerCase();
+  const lowerExt = (extension || '').toLowerCase();
+
+  // 1. Lore based on specific application/name keywords
+  let specialLore = "";
+  if (lowerName.includes("figma")) {
+    specialLore = "The oracle envisions wireframes, auto-layouts, and designers debating over subtle border-radius tokens.";
+  } else if (lowerName.includes("github")) {
+    specialLore = "The echoes of git commits reverberate: 'fixes bug', 'final v2', and the quiet fear of merge conflicts.";
+  } else if (lowerName.includes("netflix")) {
+    specialLore = "A gateway to late-night binge watching when you promised yourself you'd go to sleep at 11 PM.";
+  } else if (lowerName.includes("postman")) {
+    specialLore = "Whispers of HTTP headers, Bearer tokens, and desperate prayers for a 200 OK response.";
+  } else if (lowerName.includes("mongo")) {
+    specialLore = "Unbound BSON documents drifting through memory without the rigid tyranny of SQL tables.";
+  } else if (lowerName.includes("vitis") || lowerName.includes("vivado")) {
+    specialLore = "FPGA synthesis and hardware description wizardry. The silicon gods required immense CPU patience when this was forged.";
+  } else if (lowerName.includes("edge") || lowerName.includes("chrome")) {
+    specialLore = "A celestial vessel that hungers endlessly for physical RAM and hundreds of abandoned browser tabs.";
+  } else if (lowerName.includes("code") || lowerName.includes("visual studio")) {
+    specialLore = "The sacred IDE anvil where raw keystrokes are forged into living software.";
+  } else if (lowerName.includes("readme")) {
+    specialLore = "The sacred guide scroll created to illuminate newcomers, yet perpetually skimmed.";
+  } else if (lowerName.includes("package")) {
+    specialLore = "A manifest binding hundreds of third-party dependencies upon which digital towers are erected.";
+  }
+
+  // 2. Archetype based on file extension
+  let extLore = "";
+  if (lowerExt === "lnk") {
+    extLore = "A spectral bridge pointing to an executable realm buried deeper within your storage drives.";
+  } else if (lowerExt === "docx" || lowerExt === "doc") {
+    extLore = "A parchment of formatted mortal words, drafted under the watchful gaze of Microsoft Word.";
+  } else if (lowerExt === "pdf") {
+    extLore = "An immutable monolith of frozen text, resisting the editing whims of mortal hands.";
+  } else if (["png", "jpg", "jpeg", "webp"].includes(lowerExt)) {
+    extLore = "A matrix of photons and pixel grids captured in silicon memory.";
+  } else if (["js", "ts", "jsx", "tsx"].includes(lowerExt)) {
+    extLore = "A script of asynchronous promises and event-loop spells.";
+  } else if (["c", "cpp", "h"].includes(lowerExt)) {
+    extLore = "Ancient machine-level runes directly conversing with CPU registers and stack pointers.";
+  } else if (["json", "xml", "yaml", "yml"].includes(lowerExt)) {
+    extLore = "A structured hierarchy of configuration keys and values.";
+  } else if (lowerExt === "html") {
+    extLore = "The skeletal DOM markup of the world-wide web.";
+  } else if (lowerExt === "css") {
+    extLore = "The aesthetic veil of colors, animations, and cascading rules.";
+  } else {
+    extLore = `An enigmatic entity registered under the .${lowerExt} format.`;
+  }
+
+  // 3. Time of day clue
+  const hour = birthDate.getHours();
+  let timeClue = "";
+  if (hour >= 5 && hour < 12) {
+    timeClue = "Brought into existence during the early morning hours over caffeine and sunrise.";
+  } else if (hour >= 12 && hour < 17) {
+    timeClue = "Crafted in the steady daylight of an active afternoon.";
+  } else if (hour >= 17 && hour < 22) {
+    timeClue = "Manifested in the dusk and twilight as the working day wound down.";
+  } else {
+    timeClue = "Birthed in the silent witching hours of the night when mortals sleep.";
+  }
+
+  // 4. Approximate mass clue
+  let sizeClue = "";
+  if (sizeBytes < 1024) {
+    sizeClue = "Extremely light—scarcely a few hundred bytes, featherweight in the digital ether.";
+  } else if (sizeBytes < 50000) {
+    sizeClue = `Weighs a modest handful of kilobytes (roughly between ${(sizeBytes / 1024).toFixed(0)} KB).`;
+  } else if (sizeBytes < 1048576) {
+    sizeClue = `Substantial mass in the hundreds of kilobytes range.`;
+  } else {
+    sizeClue = `A heavyweight file spanning more than ${(sizeBytes / 1048576).toFixed(1)} megabytes.`;
+  }
+
+  // 5. Date & Zodiac Clue
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const birthMonthName = months[birthDate.getMonth()];
+  const birthYear = birthDate.getFullYear();
+  const dateClue = `Born in ${birthMonthName} of ${birthYear}, under the cosmic reign of ${zodiac.sign} (${zodiac.element}).`;
+
+  // Combine into a bespoke, atmospheric prophecy
+  const parts = [];
+  if (specialLore) parts.push(specialLore);
+  parts.push(extLore);
+  parts.push(dateClue);
+  parts.push(timeClue);
+  parts.push(sizeClue);
+
+  return parts.join(" ");
+}
+
 function evaluateAstrologicalGuesses({ fileName, actualBirthtime, actualBytes, guessDate, guessTime, guessSize, guessSizeUnit, action }) {
   const actualDateObj = new Date(actualBirthtime);
   
-  // Format actual YYYY-MM-DD
   const actualYear = actualDateObj.getFullYear();
   const actualMonth = String(actualDateObj.getMonth() + 1).padStart(2, '0');
   const actualDay = String(actualDateObj.getDate()).padStart(2, '0');
   const formattedActualDate = `${actualYear}-${actualMonth}-${actualDay}`;
 
-  // Format actual HH:MM:SS
   const actualHours = String(actualDateObj.getHours()).padStart(2, '0');
   const actualMins = String(actualDateObj.getMinutes()).padStart(2, '0');
   const actualSecs = String(actualDateObj.getSeconds()).padStart(2, '0');
@@ -72,7 +163,7 @@ function evaluateAstrologicalGuesses({ fileName, actualBirthtime, actualBytes, g
 
   const zodiac = getZodiacSign(actualDateObj);
 
-  // 1. Evaluate Date Difference (in days)
+  // 1. Date Diff
   const userDateObj = new Date(guessDate + "T00:00:00Z");
   const normalizedActualDate = new Date(`${formattedActualDate}T00:00:00Z`);
   const diffTime = Math.abs(userDateObj - normalizedActualDate);
@@ -89,7 +180,7 @@ function evaluateAstrologicalGuesses({ fileName, actualBirthtime, actualBytes, g
     dateScore = Math.max(0, 20 - ((diffDays - 30) * 0.2));
   }
 
-  // 2. Evaluate Time Difference (in seconds)
+  // 2. Time Diff
   function timeToSeconds(timeStr) {
     if (!timeStr) return 0;
     const parts = timeStr.split(":").map(Number);
@@ -114,7 +205,7 @@ function evaluateAstrologicalGuesses({ fileName, actualBirthtime, actualBytes, g
     timeScore = Math.max(0, 15 - ((diffSec - 21600) / 64800 * 15));
   }
 
-  // 3. Evaluate Size Difference (in bytes)
+  // 3. Size Diff
   let userBytes = Number(guessSize) || 0;
   if (guessSizeUnit === "KB") {
     userBytes = Math.round(userBytes * 1024);
@@ -138,10 +229,9 @@ function evaluateAstrologicalGuesses({ fileName, actualBirthtime, actualBytes, g
     sizeScore = Math.max(0, 15 - Math.min(15, (relativeError - 1.0) * 5));
   }
 
-  // Composite Astral Score (0 - 100)
+  // Composite Astral Score
   const compositeScore = Math.round((dateScore * 0.35) + (timeScore * 0.30) + (sizeScore * 0.35));
 
-  // Determine Verdict
   let tier = "DOOMED";
   let allowed = false;
   let verdictTitle = "DOOMED: Astral Disconnection";
@@ -202,5 +292,6 @@ function evaluateAstrologicalGuesses({ fileName, actualBirthtime, actualBytes, g
 
 module.exports = {
   getZodiacSign,
+  generateOracleClue,
   evaluateAstrologicalGuesses
 };

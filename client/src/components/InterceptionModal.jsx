@@ -118,8 +118,13 @@ export default function InterceptionModal({
         {/* Modal Header */}
         <div className="p-5 border-b border-white/[0.08] flex items-center justify-between bg-black/40">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-astral-purple/20 border border-astral-purple/40 flex items-center justify-center shadow-cosmic-glow">
-              <ShieldAlert className="w-5 h-5 text-astral-purple animate-pulse" />
+            <div className="relative w-12 h-12 rounded-full p-0.5 border border-astral-purple/50 shadow-cosmic-glow shrink-0 overflow-hidden">
+              <img 
+                src="/zodiac_wheel.jpg" 
+                alt="Zodiac Chart" 
+                className="w-full h-full object-cover rounded-full filter contrast-125 brightness-105"
+              />
+              <div className="absolute inset-0 rounded-full border border-astral-purple/40 pointer-events-none" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
@@ -254,23 +259,49 @@ export default function InterceptionModal({
                 </div>
               </div>
 
-              {/* Satirical Oracle Clue Button */}
-              <div className="pt-1">
-                <button
-                  type="button"
-                  onClick={() => {
-                    soundEffects.playOracleHum();
-                    setShowOracleHint(!showOracleHint);
-                  }}
-                  className="w-full py-2 px-3 rounded-lg border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/10 text-xs font-mono text-purple-300 flex items-center justify-center gap-2 transition-all"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                  <span>{showOracleHint ? "Conceal Oracle Clue" : "Consult Astral Oracle (Clue)"}</span>
-                </button>
+              {/* Optional Oracle Whisper Disclosure */}
+              <div className="p-3.5 rounded-xl bg-purple-950/20 border border-purple-500/20 transition-all">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Sparkles className="w-3.5 h-3.5 text-astral-purple animate-pulse" />
+                    <span className="text-xs font-mono font-semibold text-purple-300">
+                      Astral Oracle (Optional Hint)
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      soundEffects.playOracleHum();
+                      setShowOracleHint(!showOracleHint);
+                    }}
+                    className="px-2.5 py-1 rounded-lg bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-[11px] font-mono text-purple-200 transition-all flex items-center gap-1.5"
+                  >
+                    <span>{showOracleHint ? "Conceal Oracle Prophecy" : "🔮 Consult Oracle Whisper"}</span>
+                  </button>
+                </div>
 
                 {showOracleHint && (
-                  <div className="mt-2.5 p-3 rounded-lg bg-black/50 border border-purple-500/30 text-xs font-mono text-purple-200/90 leading-relaxed italic animate-fade-in">
-                    🔮 <strong>Oracle Whisper:</strong> "{oracleHint}"
+                  <div className="mt-3 pt-3 border-t border-purple-500/15 flex items-start space-x-3.5 animate-fade-in">
+                    <div className="relative w-12 h-12 rounded-full shrink-0 p-0.5 border border-purple-400/40 shadow-cosmic-glow overflow-hidden">
+                      <img 
+                        src="/zodiac_wheel.jpg" 
+                        alt="Oracle Wheel" 
+                        className="w-full h-full object-cover rounded-full filter contrast-125" 
+                      />
+                      <div className="absolute inset-0 rounded-full border border-purple-400/30 pointer-events-none" />
+                    </div>
+                    <div className="space-y-1 text-left min-w-0">
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-purple-400 font-bold flex items-center gap-1">
+                        <span>Prophecy for</span>
+                        <span className="text-white truncate">"{file.name}"</span>
+                      </div>
+                      <p className="text-xs font-mono text-purple-200/90 leading-relaxed italic">
+                        "{file.oracleClue || oracleHint}"
+                      </p>
+                      <div className="text-[9px] font-mono text-slate-500 mt-1">
+                        * Consulting the oracle is purely optional and does not affect your cosmic verdict score.
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
-const { evaluateAstrologicalGuesses, getZodiacSign } = require('./astrologyEngine');
+const { evaluateAstrologicalGuesses, getZodiacSign, generateOracleClue } = require('./astrologyEngine');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -120,6 +120,13 @@ app.get('/api/browse', (req, res) => {
           astrologicalSign: zodiac.sign,
           element: zodiac.element,
           planetaryRuler: zodiac.ruler,
+          oracleClue: isDir ? null : generateOracleClue({
+            fileName: item.name,
+            extension: ext,
+            birthDate: new Date(birthDate),
+            sizeBytes: itemStat.size,
+            zodiac
+          }),
           status: 'closed'
         });
       } catch (err) {
