@@ -191,7 +191,7 @@ app.get('/api/file-content', (req, res) => {
 
 // 4. Interrogation Engine for Real PC Files
 app.post('/api/interrogate', (req, res) => {
-  const { filePath, action, guessDate, guessTime, guessSize, guessSizeUnit } = req.body;
+  const { filePath, action, guessDate, guessTime, guessSize, guessSizeUnit, psychicConfidence } = req.body;
 
   if (!filePath || !action) {
     return res.status(400).json({
@@ -216,7 +216,7 @@ app.post('/api/interrogate', (req, res) => {
     const actualBytes = stat.size;
 
     let evaluation;
-    // If explicit guesses are passed (legacy/testing), evaluate deltas; otherwise divine celestial fate randomly
+    // Collect astrological petition inputs and predict randomly (pure 50/50, zero accuracy checking)
     if (guessDate && guessTime && guessSize !== undefined) {
       evaluation = evaluateAstrologicalGuesses({
         fileName,
@@ -226,6 +226,7 @@ app.post('/api/interrogate', (req, res) => {
         guessTime,
         guessSize,
         guessSizeUnit: guessSizeUnit || "bytes",
+        psychicConfidence: psychicConfidence || 65,
         action
       });
     } else {

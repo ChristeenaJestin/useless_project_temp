@@ -131,7 +131,8 @@ export default function InterceptionModal({
       guessDate,
       guessTime,
       guessSize: Number(guessSize),
-      guessSizeUnit
+      guessSizeUnit,
+      psychicConfidence: Number(psychicConfidence)
     });
   };
 
@@ -466,7 +467,7 @@ export default function InterceptionModal({
                   {LOADING_STAGES[loadingStageIdx]}
                 </div>
                 <p className="text-xs font-mono text-slate-400">
-                  Cross-referencing your intuition with actual NTFS timestamps...
+                  Casting the cosmic lots and consulting astral coordinates...
                 </p>
               </div>
 
@@ -528,51 +529,64 @@ export default function InterceptionModal({
                 </div>
               </div>
 
-              {/* Accuracy Delta Breakdown vs Real PC File Stats */}
-              {verdictResult.deltas && (
+              {/* Registered Astrological Petition (Collected without accuracy judgment) */}
+              {verdictResult.submissionDetails && (
                 <div className="p-4 rounded-xl bg-black/40 border border-white/[0.08] space-y-3 font-mono text-xs">
                   <div className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold border-b border-white/[0.06] pb-2 flex items-center justify-between">
-                    <span>Actual PC File Metadata vs Psychic Guess</span>
-                    <span className="text-astral-purple">OS Kernel Verification</span>
+                    <span className="flex items-center gap-1.5 text-astral-cyan">
+                      <Sparkles className="w-3.5 h-3.5 text-astral-cyan" />
+                      Registered Astrological Petition
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                      Pure 50/50 Cosmic Lot
+                    </span>
                   </div>
 
-                  {/* Date Delta */}
-                  <div className="flex items-center justify-between p-2 rounded bg-white/[0.02]">
-                    <span className="text-slate-300">Creation Date:</span>
-                    <div className="text-right">
-                      <div className="text-slate-400 text-[11px]">
-                        Guess: <span className="text-white">{verdictResult.deltas.date.guess}</span> | Real: <span className="text-astral-purple font-semibold">{verdictResult.deltas.date.actual}</span>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+                      <div className="text-[10px] uppercase tracking-wider text-slate-400 flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-astral-purple" />
+                        Intuited Birth Date
                       </div>
-                      <div className="text-[10px] text-slate-500">
-                        {verdictResult.deltas.date.diffDays} days off ({verdictResult.deltas.date.score}% accuracy)
+                      <div className="text-white text-xs font-semibold mt-1">
+                        {verdictResult.submissionDetails.guessDate}
+                      </div>
+                    </div>
+
+                    <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+                      <div className="text-[10px] uppercase tracking-wider text-slate-400 flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-astral-cyan" />
+                        Intuited Birth Time
+                      </div>
+                      <div className="text-white text-xs font-semibold mt-1">
+                        {verdictResult.submissionDetails.guessTime}
+                      </div>
+                    </div>
+
+                    <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+                      <div className="text-[10px] uppercase tracking-wider text-slate-400 flex items-center gap-1">
+                        <HardDrive className="w-3 h-3 text-emerald-400" />
+                        Intuited File Mass
+                      </div>
+                      <div className="text-white text-xs font-semibold mt-1">
+                        {verdictResult.submissionDetails.guessSize}
+                      </div>
+                    </div>
+
+                    <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+                      <div className="text-[10px] uppercase tracking-wider text-slate-400 flex items-center gap-1">
+                        <Orbit className="w-3 h-3 text-amber-400" />
+                        Psychic Resonance
+                      </div>
+                      <div className="text-white text-xs font-semibold mt-1">
+                        {verdictResult.submissionDetails.psychicConfidence}
                       </div>
                     </div>
                   </div>
 
-                  {/* Time Delta */}
-                  <div className="flex items-center justify-between p-2 rounded bg-white/[0.02]">
-                    <span className="text-slate-300">Creation Time:</span>
-                    <div className="text-right">
-                      <div className="text-slate-400 text-[11px]">
-                        Guess: <span className="text-white">{verdictResult.deltas.time.guess}</span> | Real: <span className="text-astral-purple font-semibold">{verdictResult.deltas.time.actual}</span>
-                      </div>
-                      <div className="text-[10px] text-slate-500">
-                        {verdictResult.deltas.time.diffMinutes} mins off ({verdictResult.deltas.time.score}% accuracy)
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Size Delta */}
-                  <div className="flex items-center justify-between p-2 rounded bg-white/[0.02]">
-                    <span className="text-slate-300">File Mass:</span>
-                    <div className="text-right">
-                      <div className="text-slate-400 text-[11px]">
-                        Guess: <span className="text-white">{verdictResult.deltas.size.guessBytes.toLocaleString()} B</span> | Real: <span className="text-astral-purple font-semibold">{verdictResult.deltas.size.actualBytes.toLocaleString()} B</span>
-                      </div>
-                      <div className="text-[10px] text-slate-500">
-                        {verdictResult.deltas.size.diffBytes.toLocaleString()} bytes off ({verdictResult.deltas.size.score}% accuracy)
-                      </div>
-                    </div>
+                  <div className="text-[10px] text-slate-400 bg-white/[0.02] px-3 py-2 rounded-lg border border-white/[0.03] flex items-center justify-between">
+                    <span>Celestial Arbiter: <strong className="text-slate-200">50/50 Random Fortune</strong></span>
+                    <span className="text-slate-400 font-mono">No earthly accuracy required</span>
                   </div>
                 </div>
               )}
