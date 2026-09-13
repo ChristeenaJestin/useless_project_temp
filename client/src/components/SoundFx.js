@@ -189,6 +189,33 @@ class SoundEffects {
     osc.start(now);
     osc.stop(now + 0.04);
   }
+
+  playBypassChime() {
+    if (this.muted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    // Mystical celestial trill arpeggio (E, G#, B, D#, F#, high B)
+    const freqs = [659.25, 830.61, 987.77, 1244.51, 1479.98, 1975.53];
+    freqs.forEach((freq, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+
+      gain.gain.setValueAtTime(0.001, now + idx * 0.06);
+      gain.gain.exponentialRampToValueAtTime(0.12, now + idx * 0.06 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.06 + 0.7);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now + idx * 0.06);
+      osc.stop(now + idx * 0.06 + 0.8);
+    });
+  }
 }
 
 export const soundEffects = new SoundEffects();

@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
-const { evaluateAstrologicalGuesses, getZodiacSign, generateOracleClue } = require('./astrologyEngine');
+const { evaluateAstrologicalGuesses, getZodiacSign, generateOracleClue, generateBypassVerdict } = require('./astrologyEngine');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -153,6 +153,27 @@ app.get('/api/browse', (req, res) => {
   }
 });
 
+function readFileContentHelper(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  const imageExts = new Set(['.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp', '.ico']);
+  
+  if (imageExts.has(ext)) {
+    const buffer = fs.readFileSync(filePath);
+    const mime = ext === '.svg' ? 'image/svg+xml' : `image/${ext.replace('.', '')}`;
+    return { isImage: true, content: `data:${mime};base64,${buffer.toString('base64')}` };
+  } else {
+    try {
+      const raw = fs.readFileSync(filePath, 'utf-8');
+      return {
+        isImage: false,
+        content: raw.length > 65536 ? raw.substring(0, 65536) + "\n\n...[Truncated for celestial balance]..." : raw
+      };
+    } catch (e) {
+      return { isImage: false, content: "[Binary file content - cannot display as plain text]" };
+    }
+  }
+}
+
 // 3. Read Real File Content (when unlocked by Astrological Verdict)
 app.get('/api/file-content', (req, res) => {
   const filePath = req.query.path;
@@ -161,20 +182,8 @@ app.get('/api/file-content', (req, res) => {
   }
 
   try {
-    const ext = path.extname(filePath).toLowerCase();
-    const imageExts = new Set(['.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp', '.ico']);
-    
-    if (imageExts.has(ext)) {
-      const buffer = fs.readFileSync(filePath);
-      const mime = ext === '.svg' ? 'image/svg+xml' : `image/${ext.replace('.', '')}`;
-      return res.json({ isImage: true, content: `data:${mime};base64,${buffer.toString('base64')}`, ext });
-    }
-
-    // Read text/code/document files
-    const rawContent = fs.readFileSync(filePath, 'utf-8');
-    const truncated = rawContent.length > 65536 ? rawContent.substring(0, 65536) + "\n\n...[Truncated for celestial balance]..." : rawContent;
-    
-    res.json({ isImage: false, content: truncated, ext });
+    const content = readFileContentHelper(filePath);
+    res.json(content);
   } catch (err) {
     res.status(500).json({ error: `Cannot read file: ${err.message}` });
   }
@@ -221,24 +230,7 @@ app.post('/api/interrogate', (req, res) => {
 
     if (evaluation.allowed) {
       if (action === 'open') {
-        const ext = path.extname(filePath).toLowerCase();
-        const imageExts = new Set(['.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp', '.ico']);
-        
-        if (imageExts.has(ext)) {
-          const buffer = fs.readFileSync(filePath);
-          const mime = ext === '.svg' ? 'image/svg+xml' : `image/${ext.replace('.', '')}`;
-          fileContent = { isImage: true, content: `data:${mime};base64,${buffer.toString('base64')}` };
-        } else {
-          try {
-            const raw = fs.readFileSync(filePath, 'utf-8');
-            fileContent = {
-              isImage: false,
-              content: raw.length > 65536 ? raw.substring(0, 65536) + "\n\n...[Truncated for celestial balance]..." : raw
-            };
-          } catch (e) {
-            fileContent = { isImage: false, content: "[Binary file content - cannot display as plain text]" };
-          }
-        }
+        fileContent = readFileContentHelper(filePath);
       } else if (action === 'delete') {
         // Safe deletion: move to local .astral_trash in user home
         const trashDir = path.join(os.homedir(), '.astral_trash');
@@ -256,6 +248,110 @@ app.post('/api/interrogate', (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ error: `File interrogation failed: ${err.message}` });
+  }
+});
+
+// 5. Cosmic Loophole Bypass Engine (Overriding the Doom)
+app.post('/api/bypass', (req, res) => {
+  const { filePath, action, bypassType, payload = {} } = req.body;
+
+  if (!filePath || !bypassType) {
+    return res.status(400).json({ error: "Missing filePath or bypassType for cosmic bypass." });
+  }
+
+  let effectiveFilePath = filePath;
+
+  try {
+    // Perform file-level mutations if applicable
+    if (bypassType === 'spatial-relocation') {
+      if (fs.existsSync(filePath)) {
+        const dir = path.dirname(filePath);
+        const originalExt = path.extname(filePath);
+        const baseWithoutExt = path.basename(filePath, originalExt);
+        const newName = payload.newName && payload.newName.trim() 
+          ? payload.newName.trim() 
+          : `blessed_${baseWithoutExt}${originalExt}`;
+        const newFullPath = path.join(dir, newName);
+
+        if (!fs.existsSync(newFullPath)) {
+          fs.renameSync(filePath, newFullPath);
+          effectiveFilePath = newFullPath;
+        }
+      }
+    } else if (bypassType === 'transmutation') {
+      // Touch file timestamp to reset natal chart to Newborn
+      if (fs.existsSync(filePath)) {
+        try {
+          const now = new Date();
+          fs.utimesSync(filePath, now, now);
+        } catch (e) {}
+      }
+    } else if (bypassType === 'malicious-compliance') {
+      // Inject simulated bit-rot header
+      if (fs.existsSync(filePath)) {
+        try {
+          const ext = path.extname(filePath).toLowerCase();
+          const textExts = new Set(['.txt', '.md', '.json', '.js', '.jsx', '.ts', '.tsx', '.html', '.css']);
+          if (textExts.has(ext)) {
+            const originalText = fs.readFileSync(filePath, 'utf-8');
+            if (!originalText.startsWith("/* [ASTRAL_BIT_ROT_LOBOTOMY]")) {
+              fs.writeFileSync(filePath, `/* [ASTRAL_BIT_ROT_LOBOTOMY: Mars Retrograde Exemption Granted] */\n` + originalText, 'utf-8');
+            }
+          }
+        } catch (e) {}
+      }
+    } else if (bypassType === 'sacrifice') {
+      // If user sacrificed an actual disposable file
+      if (payload.sacrificialFilePath && fs.existsSync(payload.sacrificialFilePath)) {
+        try {
+          fs.unlinkSync(payload.sacrificialFilePath);
+        } catch (e) {}
+      }
+    }
+
+    // Generate celestial bypass verdict
+    const verdict = generateBypassVerdict({
+      bypassType,
+      fileName: path.basename(effectiveFilePath),
+      payload
+    });
+
+    // Execute the file operation
+    let fileContent = null;
+    if (action === 'open') {
+      if (fs.existsSync(effectiveFilePath)) {
+        fileContent = readFileContentHelper(effectiveFilePath);
+      }
+    } else if (action === 'delete') {
+      if (fs.existsSync(effectiveFilePath)) {
+        const trashDir = path.join(os.homedir(), '.astral_trash');
+        if (!fs.existsSync(trashDir)) {
+          fs.mkdirSync(trashDir, { recursive: true });
+        }
+        const destination = path.join(trashDir, `${Date.now()}_${path.basename(effectiveFilePath)}`);
+        fs.renameSync(effectiveFilePath, destination);
+      }
+    }
+
+    // Recompute file's updated astrological identity
+    let updatedZodiac = null;
+    if (fs.existsSync(effectiveFilePath)) {
+      try {
+        const stat = fs.statSync(effectiveFilePath);
+        const birthDate = stat.birthtime && stat.birthtime.getTime() > 0 ? stat.birthtime : stat.mtime || new Date();
+        updatedZodiac = getZodiacSign(new Date(birthDate));
+      } catch (e) {}
+    }
+
+    res.json({
+      verdict,
+      fileContent,
+      updatedFilePath: effectiveFilePath !== filePath ? effectiveFilePath : null,
+      newFileName: path.basename(effectiveFilePath),
+      updatedZodiac
+    });
+  } catch (err) {
+    res.status(500).json({ error: `Cosmic bypass failed: ${err.message}` });
   }
 });
 

@@ -133,6 +133,38 @@ export default function App() {
     }
   };
 
+  const handleBypassSuccess = (bypassData) => {
+    const { action, result, file } = bypassData;
+    const targetPath = result.updatedFilePath || file.path;
+
+    // Set verdictResult to the successful bypass verdict
+    setVerdictResult(result.verdict);
+
+    if (action === 'open' && result.fileContent) {
+      setOpenFiles(prev => ({
+        ...prev,
+        [targetPath]: result.fileContent
+      }));
+    } else if (action === 'delete') {
+      setOpenFiles(prev => {
+        const updated = { ...prev };
+        delete updated[file.path];
+        return updated;
+      });
+      loadDirectory(currentDir);
+    } else if (action === 'close') {
+      setOpenFiles(prev => {
+        const updated = { ...prev };
+        delete updated[file.path];
+        return updated;
+      });
+    }
+
+    if (result.updatedFilePath) {
+      loadDirectory(currentDir);
+    }
+  };
+
   const handleCloseModal = () => {
     setInterception(null);
     setVerdictResult(null);
@@ -196,6 +228,7 @@ export default function App() {
         onSubmitInterrogation={handleSubmitInterrogation}
         isSubmitting={isSubmitting}
         verdictResult={verdictResult}
+        onBypassSuccess={handleBypassSuccess}
       />
     </div>
   );

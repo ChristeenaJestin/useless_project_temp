@@ -290,8 +290,68 @@ function evaluateAstrologicalGuesses({ fileName, actualBirthtime, actualBytes, g
   };
 }
 
+// 8 Cosmic Loophole Bypass Generators
+function generateBypassVerdict({ bypassType, fileName, payload = {} }) {
+  const LORE = {
+    'time-shift': {
+      title: "CHRONOLOGICAL EXORCISM: Spacetime Warp Complete",
+      message: "You fast-forwarded local spacetime by 30 celestial minutes. Mars has formally vacated its retrograde stance in your 8th house. The cosmic firewall dissolves in a flash of astral light!",
+      bonusScore: 92
+    },
+    'spatial-relocation': {
+      title: "SPATIAL RELOCATION: Fresh Karmic Slate Granted",
+      message: `By translocating this physical file to a new astral coordinate ("${payload.newName || 'relocated_entity'}"), its historical soul-debt is annulled under the Lex Loci Astrologica.`,
+      bonusScore: 88
+    },
+    'transmutation': {
+      title: "METAMORPHIC TRANSMUTATION: Natal Aura Cleansed",
+      message: "The binary payload was compressed into the astral zip void and reconstituted. Its original birth timestamp aura has been extinguished. The file is reborn as a Neutral Newborn entity.",
+      bonusScore: 90
+    },
+    'curse-transfer': {
+      title: "KARMIC OUTSOURCING: Soul-Debt Redirected",
+      message: `A mystical curse dispatch was transmitted to "${payload.coworker || 'innocent.coworker@company.internal'}". Your aura is cleansed; their local environment will bear the astral burden.`,
+      bonusScore: 85
+    },
+    'malicious-compliance': {
+      title: "MALICIOUS COMPLIANCE: Bit-Rot Exemption Approved",
+      message: "The file was subjected to intentional astral lobotomy / bit-rot simulation. The gatekeeper sighs: 'You cannot slay what is already dead.' Operation permitted by default.",
+      bonusScore: 78
+    },
+    'sacrifice': {
+      title: "SACRIFICIAL OFFERING: Zodiac Gods Appeased",
+      message: `The disposable offering ("${payload.sacrificedName || 'node_modules/phantom_cache.tmp'}") was immolated upon the celestial altar. The gods smile upon your tribute!`,
+      bonusScore: 96
+    },
+    'chrono-cheat': {
+      title: "CHRONO-CHEAT: Golden Alignment Forged",
+      message: "System clock simulation engaged: Venus and Jupiter have formed a mythical grand trine with your CPU crystal. Astral resonance elevated to 99% Seraphic Grace.",
+      bonusScore: 99
+    },
+    'corporate-bribe': {
+      title: "CORPORATE BRIBE: Developer Waiver Accepted",
+      message: `Astral waiver filed under excuse: "${payload.excuse || "I'll write unit tests later"}". The celestial gatekeeper yields to corporate bureaucracy. May your production logs forgive you.`,
+      bonusScore: 82
+    }
+  };
+
+  const outcome = LORE[bypassType] || LORE['time-shift'];
+
+  return {
+    tier: 'LUCKY',
+    allowed: true,
+    verdictTitle: outcome.title,
+    compositeScore: outcome.bonusScore,
+    message: outcome.message,
+    bypassType,
+    bypassed: true
+  };
+}
+
 module.exports = {
   getZodiacSign,
   generateOracleClue,
-  evaluateAstrologicalGuesses
+  evaluateAstrologicalGuesses,
+  generateBypassVerdict
 };
+
