@@ -190,6 +190,47 @@ class SoundEffects {
     osc.stop(now + 0.04);
   }
 
+  playBootChime() {
+    if (this.muted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    
+    // Deep celestial root drone (D2: 73.42Hz)
+    const subOsc = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(73.42, now);
+    subGain.gain.setValueAtTime(0.001, now);
+    subGain.gain.exponentialRampToValueAtTime(0.15, now + 0.1);
+    subGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.0);
+    subOsc.connect(subGain);
+    subGain.connect(this.ctx.destination);
+    subOsc.start(now);
+    subOsc.stop(now + 2.1);
+
+    // Ethereal celestial chord (Dmaj9: D4, F#4, A4, C#5, E5)
+    const freqs = [293.66, 369.99, 440.00, 554.37, 659.25, 880.00];
+    freqs.forEach((freq, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.04);
+
+      gain.gain.setValueAtTime(0.001, now + idx * 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.08 / (idx * 0.3 + 1), now + idx * 0.04 + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8 + idx * 0.1);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now + idx * 0.04);
+      osc.stop(now + 2.2);
+    });
+  }
+
   playBypassChime() {
     if (this.muted) return;
     this.init();

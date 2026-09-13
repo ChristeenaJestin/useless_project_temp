@@ -5,6 +5,7 @@ import FileViewer from './components/FileViewer';
 import InterceptionModal from './components/InterceptionModal';
 import CosmicBackground from './components/CosmicBackground';
 import CursorAura from './components/CursorAura';
+import CosmicSplashLoader from './components/CosmicSplashLoader';
 import { soundEffects } from './components/SoundFx';
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
   const [interception, setInterception] = useState(null); // { file, action }
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [verdictResult, setVerdictResult] = useState(null);
+  const [showBootLoader, setShowBootLoader] = useState(true);
 
   // Load real files from PC directory
   const loadDirectory = async (dirPath) => {
@@ -217,6 +219,11 @@ export default function App() {
         verdictResult={verdictResult}
         onBypassSuccess={handleBypassSuccess}
       />
+
+      {/* Animating Cosmic OS Boot Loader */}
+      {showBootLoader && (
+        <CosmicSplashLoader onComplete={() => setShowBootLoader(false)} />
+      )}
     </div>
   );
 }
