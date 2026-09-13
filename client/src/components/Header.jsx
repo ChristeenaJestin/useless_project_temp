@@ -46,10 +46,10 @@ export default function Header({
           <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-astral-emerald animate-pulse"></span>
         </div>
         <div>
-          <h1 className="text-sm font-bold tracking-wider text-white font-mono flex items-center gap-1.5">
-            AstroFS <span className="text-astral-purple font-normal text-[10px] px-1.5 py-0.5 rounded bg-astral-purple/15 border border-astral-purple/30">PC DRIVES & DESKTOP</span>
+          <h1 className="text-base font-extrabold tracking-wider text-white font-syne flex items-center gap-1.5">
+            AstroFS <span className="text-astral-purple font-mono font-normal text-[10px] px-1.5 py-0.5 rounded bg-astral-purple/15 border border-astral-purple/30">PC DRIVES & DESKTOP</span>
           </h1>
-          <p className="text-[10px] text-slate-400 font-mono">
+          <p className="text-[10px] text-slate-400 font-sans tracking-wide">
             Astrological File Interceptor for Windows PC
           </p>
         </div>

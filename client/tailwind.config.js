@@ -27,10 +27,10 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['"Space Grotesk"', 'Inter', 'system-ui', 'sans-serif'],
-        mono: ['"Space Mono"', '"JetBrains Mono"', 'monospace'],
-        display: ['"Space Grotesk"', 'sans-serif'],
-        space: ['"Space Grotesk"', 'sans-serif']
+        syne: ['"Syne"', 'sans-serif'],
+        display: ['"Syne"', 'sans-serif'],
+        sans: ['"Inter"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', '"Fira Code"', 'Consolas', 'monospace'],
       },
       boxShadow: {
         'cosmic-glow': '0 0 25px -5px rgba(139, 92, 246, 0.35)',

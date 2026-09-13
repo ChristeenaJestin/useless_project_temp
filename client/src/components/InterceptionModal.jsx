@@ -262,9 +262,9 @@ export default function InterceptionModal({
                   Astrological Verification
                 </span>
               </div>
-              <h2 className="text-xs sm:text-sm font-mono font-bold text-white mt-1 flex items-center gap-1.5 truncate">
+              <h2 className="text-xs sm:text-sm font-syne font-bold text-white mt-1 flex items-center gap-1.5 truncate">
                 Target: <span className="text-astral-purple truncate">{file.name}</span>
-                <span className="text-slate-500">({actionMeta.label})</span>
+                <span className="text-slate-500 font-mono">({actionMeta.label})</span>
               </h2>
             </div>
           </div>
@@ -607,7 +607,7 @@ export default function InterceptionModal({
                           Bypass Decision Required
                         </span>
                       </div>
-                      <h3 className="text-base font-mono font-bold text-white leading-tight">
+                      <h3 className="text-base font-syne font-bold text-white leading-tight">
                         Do you opt to bypass the doom through ancient rituals?
                       </h3>
                       <p className="text-xs font-mono text-slate-300 leading-relaxed">
@@ -650,9 +650,9 @@ export default function InterceptionModal({
                         <Zap className="w-5 h-5 animate-pulse text-amber-400" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-mono font-bold text-white flex items-center gap-2">
+                        <h3 className="text-sm font-syne font-bold text-white flex items-center gap-2">
                           <span>Cosmic Loopholes: Choose Your Ritual</span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
                             RITUAL CHAMBER ACTIVE
                           </span>
                         </h3>
