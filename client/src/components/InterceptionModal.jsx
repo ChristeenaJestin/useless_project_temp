@@ -115,21 +115,21 @@ export default function InterceptionModal({
         {/* Ambient Top Glow */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-astral-purple via-astral-fuchsia to-astral-cyan animate-aurora" />
 
-        {/* Large Ambient Synchronized Zodiac Wheel in Modal Backdrop */}
-        <div className="absolute -top-20 -right-20 w-96 h-96 pointer-events-none opacity-25 mix-blend-screen animate-celestial-drift [mask-image:radial-gradient(circle_at_center,black_45%,transparent_85%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_45%,transparent_85%)] z-0">
-          <img src="/zodiac_wheel.jpg" alt="" className="w-full h-full object-cover filter contrast-125" />
+        {/* Large Ambient Synchronized Solar System in Modal Backdrop */}
+        <div className="absolute -top-20 -right-20 w-96 h-96 pointer-events-none opacity-25 mix-blend-screen [mask-image:radial-gradient(circle_at_center,black_45%,transparent_85%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_45%,transparent_85%)] z-0">
+          <img src="/solar_system.jpg" alt="" className="w-full h-full object-cover filter contrast-125" />
         </div>
 
         {/* Modal Header */}
         <div className="p-5 border-b border-white/[0.08] flex items-center justify-between bg-black/40 relative z-10">
           <div className="flex items-center space-x-3.5">
-            <div className="relative w-14 h-14 rounded-full p-0.5 border border-astral-purple/50 shadow-cosmic-glow shrink-0 overflow-hidden bg-black/50">
+            <div className="relative w-14 h-14 rounded-full p-0.5 border border-amber-500/40 shadow-cosmic-glow shrink-0 overflow-hidden bg-black/50">
               <img 
-                src="/zodiac_wheel.jpg" 
-                alt="Zodiac Chart" 
+                src="/solar_system.jpg" 
+                alt="Solar System" 
                 className="w-full h-full object-cover rounded-full mix-blend-screen filter contrast-125 brightness-110"
               />
-              <div className="absolute inset-0 rounded-full border border-astral-purple/40 pointer-events-none" />
+              <div className="absolute inset-0 rounded-full border border-amber-500/30 pointer-events-none" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
@@ -289,8 +289,8 @@ export default function InterceptionModal({
                   <div className="mt-3 pt-3 border-t border-purple-500/15 flex items-start space-x-3.5 animate-fade-in">
                     <div className="relative w-12 h-12 rounded-full shrink-0 p-0.5 border border-purple-400/40 shadow-cosmic-glow overflow-hidden">
                       <img 
-                        src="/zodiac_wheel.jpg" 
-                        alt="Oracle Wheel" 
+                        src="/solar_system.jpg" 
+                        alt="Oracle Solar System" 
                         className="w-full h-full object-cover rounded-full filter contrast-125" 
                       />
                       <div className="absolute inset-0 rounded-full border border-purple-400/30 pointer-events-none" />

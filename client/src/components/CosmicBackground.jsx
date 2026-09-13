@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from 'react';
 export default function CosmicBackground() {
   const canvasRef = useRef(null);
 
-  // Twinkling stars and shooting meteor particles
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -21,91 +20,113 @@ export default function CosmicBackground() {
     };
     window.addEventListener('resize', handleResize);
 
-    // Create 55 twinkling stars
-    const stars = Array.from({ length: 55 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      radius: Math.random() * 1.5 + 0.5,
-      alpha: Math.random() * 0.7 + 0.2,
-      twinkleSpeed: (Math.random() * 0.02 + 0.005) * (Math.random() > 0.5 ? 1 : -1),
-      vx: (Math.random() - 0.5) * 0.15,
-      vy: (Math.random() - 0.5) * 0.15,
-      color: Math.random() > 0.6 ? '#c084fc' : Math.random() > 0.3 ? '#38bdf8' : '#ffffff'
-    }));
+    // Mouse coordinates & smooth trailing aura position (lerp)
+    let mouse = { x: width / 2, y: height / 2, active: false };
+    let aura = { x: width / 2, y: height / 2 };
 
-    // Shooting meteor effect
-    let meteor = null;
-    const spawnMeteor = () => {
-      meteor = {
-        x: Math.random() * (width * 0.8),
-        y: Math.random() * (height * 0.3),
-        length: Math.random() * 90 + 70,
-        speed: Math.random() * 10 + 8,
-        angle: (Math.PI / 4) + (Math.random() * 0.15 - 0.07),
-        opacity: 1
-      };
+    // Cursor particle trail list
+    const auraParticles = [];
+
+    const handleMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+
+      // Spawn 2-4 cosmic tailing particles per move event
+      const colors = ['#a855f7', '#38bdf8', '#fbbf24', '#f43f5e', '#ffffff'];
+      for (let i = 0; i < 3; i++) {
+        auraParticles.push({
+          x: mouse.x + (Math.random() - 0.5) * 8,
+          y: mouse.y + (Math.random() - 0.5) * 8,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: (Math.random() - 0.5) * 1.5 + 0.3,
+          radius: Math.random() * 3 + 1.5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          decay: Math.random() * 0.025 + 0.02
+        });
+      }
+
+      // Limit particle array size
+      if (auraParticles.length > 120) {
+        auraParticles.splice(0, auraParticles.length - 120);
+      }
     };
 
-    // Spawn first meteor after 3s, then every 7-14s
-    let meteorTimeout = setTimeout(function loop() {
-      spawnMeteor();
-      meteorTimeout = setTimeout(loop, Math.random() * 7000 + 7000);
-    }, 3000);
+    window.addEventListener('mousemove', handleMouseMove);
 
-    // Animation Loop
+    // Static ambient stars
+    const stars = Array.from({ length: 45 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 1.2 + 0.4,
+      alpha: Math.random() * 0.6 + 0.2,
+      twinkleSpeed: (Math.random() * 0.015 + 0.005) * (Math.random() > 0.5 ? 1 : -1),
+      color: Math.random() > 0.5 ? '#e9d5ff' : '#bae6fd'
+    }));
+
+    // Animation Render Loop
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Render & update twinkling stars
-      stars.forEach((star) => {
-        star.alpha += star.twinkleSpeed;
-        if (star.alpha > 0.85 || star.alpha < 0.15) {
-          star.twinkleSpeed = -star.twinkleSpeed;
+      // 1. Draw smooth cursor trailing aura glow (lantern effect)
+      if (mouse.active) {
+        // Smooth lerp for trailing aura center
+        aura.x += (mouse.x - aura.x) * 0.15;
+        aura.y += (mouse.y - aura.y) * 0.15;
+
+        const auraGrad = ctx.createRadialGradient(
+          aura.x, aura.y, 0,
+          aura.x, aura.y, 140
+        );
+        auraGrad.addColorStop(0, 'rgba(168, 85, 247, 0.22)');
+        auraGrad.addColorStop(0.3, 'rgba(56, 189, 248, 0.12)');
+        auraGrad.addColorStop(0.7, 'rgba(251, 191, 36, 0.04)');
+        auraGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        ctx.fillStyle = auraGrad;
+        ctx.beginPath();
+        ctx.arc(aura.x, aura.y, 140, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 2. Draw & update cursor stardust tail particles
+      for (let i = auraParticles.length - 1; i >= 0; i--) {
+        const p = auraParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= p.decay;
+        p.radius *= 0.96;
+
+        if (p.alpha <= 0 || p.radius < 0.2) {
+          auraParticles.splice(i, 1);
+          continue;
         }
 
-        star.x += star.vx;
-        star.y += star.vy;
-        if (star.x < 0) star.x = width;
-        if (star.x > width) star.x = 0;
-        if (star.y < 0) star.y = height;
-        if (star.y > height) star.y = 0;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // 3. Draw ambient twinkling stars
+      stars.forEach((star) => {
+        star.alpha += star.twinkleSpeed;
+        if (star.alpha > 0.8 || star.alpha < 0.15) {
+          star.twinkleSpeed = -star.twinkleSpeed;
+        }
 
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
         ctx.fillStyle = star.color;
-        ctx.globalAlpha = Math.max(0.1, Math.min(1, star.alpha));
-        ctx.shadowBlur = 4;
-        ctx.shadowColor = star.color;
+        ctx.globalAlpha = star.alpha;
         ctx.fill();
       });
-
-      // Render shooting meteor if active
-      if (meteor) {
-        ctx.save();
-        const tailX = meteor.x - Math.cos(meteor.angle) * meteor.length;
-        const tailY = meteor.y - Math.sin(meteor.angle) * meteor.length;
-
-        const grad = ctx.createLinearGradient(tailX, tailY, meteor.x, meteor.y);
-        grad.addColorStop(0, 'rgba(168, 85, 247, 0)');
-        grad.addColorStop(0.6, `rgba(56, 189, 248, ${meteor.opacity * 0.5})`);
-        grad.addColorStop(1, `rgba(255, 255, 255, ${meteor.opacity})`);
-
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        ctx.moveTo(tailX, tailY);
-        ctx.lineTo(meteor.x, meteor.y);
-        ctx.stroke();
-
-        meteor.x += Math.cos(meteor.angle) * meteor.speed;
-        meteor.y += Math.sin(meteor.angle) * meteor.speed;
-        meteor.opacity -= 0.015;
-
-        if (meteor.opacity <= 0 || meteor.x > width || meteor.y > height) {
-          meteor = null;
-        }
-        ctx.restore();
-      }
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -114,40 +135,33 @@ export default function CosmicBackground() {
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      clearTimeout(meteorTimeout);
+      window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none">
-      {/* 1. Deep Nebula Ambient Glows */}
-      <div className="absolute inset-0 ambient-nebula opacity-90" />
-      <div className="absolute inset-0 bg-cosmic-grid opacity-35" />
-
-      {/* 2. Large Faded Animated Astrological Zodiac Wheel Centerpiece */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[680px] md:w-[840px] md:h-[840px] flex items-center justify-center pointer-events-none">
-        {/* Pulsing Ethereal Radial Core Glow */}
-        <div className="absolute inset-12 rounded-full bg-gradient-to-tr from-purple-600/20 via-fuchsia-500/15 to-cyan-500/20 blur-3xl animate-pulse-slow pointer-events-none" />
-
-        {/* Outer Rotating Sacred Ring */}
-        <div className="absolute inset-4 rounded-full border border-purple-500/15 animate-spin-slow pointer-events-none" />
-        <div className="absolute inset-16 rounded-full border border-cyan-400/10 border-dashed animate-celestial-drift pointer-events-none" />
-
-        {/* Faded Zodiac Chart Image */}
-        <div className="relative w-full h-full rounded-full overflow-hidden [mask-image:radial-gradient(circle_at_center,black_48%,transparent_88%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_48%,transparent_88%)]">
-          <img
-            src="/zodiac_wheel.jpg"
-            alt="Faded Celestial Zodiac Chart"
-            className="w-full h-full object-cover mix-blend-screen opacity-[0.22] filter contrast-125 brightness-110 animate-celestial-drift"
-          />
-        </div>
+      {/* 1. Full-Screen Covering Faded Solar System Background */}
+      <div className="absolute inset-0 w-full h-full">
+        <img
+          src="/solar_system.jpg"
+          alt="Solar System Background"
+          className="w-full h-full object-cover opacity-[0.26] filter contrast-125 brightness-105 transform scale-105 transition-all duration-1000 ease-out pointer-events-none"
+        />
+        {/* Soft Vignette Overlay to ensure text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950/95 via-transparent to-obsidian-950/80 pointer-events-none" />
+        <div className="absolute inset-0 bg-radial-vignette pointer-events-none opacity-60" />
       </div>
 
-      {/* 3. Twinkling Stardust & Meteor Canvas Overlay */}
+      {/* 2. Ambient Deep Cosmic Color Glows */}
+      <div className="absolute inset-0 ambient-nebula opacity-70 pointer-events-none" />
+      <div className="absolute inset-0 bg-cosmic-grid opacity-20 pointer-events-none" />
+
+      {/* 3. Interactive Tailing Aura & Particle Canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none"
+        className="absolute inset-0 w-full h-full pointer-events-none z-10"
       />
     </div>
   );

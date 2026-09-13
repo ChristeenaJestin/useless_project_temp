@@ -25,9 +25,9 @@ export default function FileViewer({
   if (!file) {
     return (
       <main className="flex-1 h-full flex flex-col items-center justify-center p-8 bg-obsidian-900 bg-cosmic-grid relative text-center overflow-hidden">
-        {/* Ambient Large Blended Zodiac Wheel */}
-        <div className="absolute w-[450px] h-[450px] pointer-events-none opacity-25 mix-blend-screen animate-celestial-drift [mask-image:radial-gradient(circle_at_center,black_50%,transparent_90%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_50%,transparent_90%)]">
-          <img src="/zodiac_wheel.jpg" alt="" className="w-full h-full object-cover filter contrast-125" />
+        {/* Ambient Large Blended Solar System Astrolabe */}
+        <div className="absolute w-[500px] h-[500px] pointer-events-none opacity-25 mix-blend-screen [mask-image:radial-gradient(circle_at_center,black_50%,transparent_90%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_50%,transparent_90%)]">
+          <img src="/solar_system.jpg" alt="" className="w-full h-full object-cover filter contrast-125" />
         </div>
 
         <div className="relative z-10 flex flex-col items-center">
@@ -125,29 +125,29 @@ export default function FileViewer({
       <div className="flex-1 overflow-y-auto p-6">
         {!isOpen && (
           <div className="h-full flex flex-col items-center justify-center p-8 text-center animate-fade-in">
-            {/* Larger, Seamlessly Blended Zodiac Astrolabe */}
-            <div className="relative w-64 h-64 md:w-80 md:h-80 mb-6 flex items-center justify-center group">
-              {/* Pulsing Ambient Nebula Core */}
-              <div className="absolute inset-4 rounded-full bg-gradient-to-tr from-astral-purple/30 via-astral-fuchsia/20 to-astral-cyan/25 blur-2xl animate-pulse-slow pointer-events-none" />
+            {/* Larger, Seamlessly Blended Solar System Planetary Centerpiece */}
+            <div className="relative w-72 h-72 md:w-84 md:h-84 mb-6 flex items-center justify-center group">
+              {/* Pulsing Ambient Solar Core */}
+              <div className="absolute inset-4 rounded-full bg-gradient-to-tr from-amber-500/25 via-purple-600/20 to-cyan-500/20 blur-3xl animate-pulse-slow pointer-events-none" />
               
-              {/* Concentric Subtle Astrolabe Rings */}
+              {/* Concentric Subtle Orbit Rings */}
               <div className="absolute inset-0 rounded-full border border-astral-purple/30 animate-pulse pointer-events-none" />
-              <div className="absolute inset-4 rounded-full border border-astral-fuchsia/20 border-dashed animate-spin-slow pointer-events-none" />
-              <div className="absolute inset-8 rounded-full border border-cyan-400/20 pointer-events-none" />
+              <div className="absolute inset-6 rounded-full border border-amber-400/20 border-dashed animate-spin-slow pointer-events-none" />
+              <div className="absolute inset-12 rounded-full border border-cyan-400/15 pointer-events-none" />
 
-              {/* The Seamless Zodiac Image */}
-              <div className="relative w-full h-full rounded-full overflow-hidden [mask-image:radial-gradient(circle_at_center,black_55%,transparent_96%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_55%,transparent_96%)]">
+              {/* The Seamless Solar System Image */}
+              <div className="relative w-full h-full rounded-full overflow-hidden [mask-image:radial-gradient(circle_at_center,black_58%,transparent_96%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_58%,transparent_96%)]">
                 <img 
-                  src="/zodiac_wheel.jpg" 
-                  alt="Celestial Zodiac Chart" 
-                  className="w-full h-full object-cover mix-blend-screen filter contrast-125 brightness-110 animate-celestial-drift transform transition-transform duration-700 group-hover:scale-105"
+                  src="/solar_system.jpg" 
+                  alt="Solar System Chart" 
+                  className="w-full h-full object-cover mix-blend-screen filter contrast-125 brightness-110 transform transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
 
               {/* Astrological Sign Badge */}
-              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-obsidian-900/90 border border-astral-purple/50 text-xs font-mono text-white whitespace-nowrap shadow-cosmic-glow flex items-center gap-2 z-10 backdrop-blur-md">
-                <Sparkles className="w-3.5 h-3.5 text-astral-purple animate-pulse" />
-                <span>Zodiac: <strong className="text-astral-purple">{file.astrologicalSign}</strong> ({file.element})</span>
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-obsidian-900/90 border border-amber-500/40 text-xs font-mono text-white whitespace-nowrap shadow-cosmic-glow flex items-center gap-2 z-10 backdrop-blur-md">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                <span>Zodiac: <strong className="text-amber-300">{file.astrologicalSign}</strong> ({file.element})</span>
               </div>
             </div>
 
