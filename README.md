@@ -3,11 +3,11 @@
 # AstroFS: Astrological File Interceptor 🎯
 
 ## Basic Details
-### Team Name: AstroFS
+### Team Name: CodeCrafters
 
 ### Team Members
 - Team Lead: Christeena Jestin - School Of Engineering, CUSAT
-- Member 2: Angelina Mary Geo - School Of Engineering, CUSAT
+- Member 2: Angelina Mary George - School Of Engineering, CUSAT
 
 ### Project Description
 AstroFS is a satirical Windows PC file manager that intercepts every mundane file action (opening or inspecting files) and subjects it to celestial interrogation. Before your operating system lets you view a file, you must submit an astrological petition guessing the file's exact birth date, birth time, byte mass, and psychic confidence. The celestial fate engine then arbitrates your fate with pure 50/50 cosmic chance—granting instant divine access if lucky, or cursing you with doom. If doomed, you must opt for absurd cosmic loop-hole rituals (relocating/renaming the file, transmuting through a ZIP void, or transferring the curse to an unsuspecting coworker) to cleanse its karma and unlock the file.
@@ -29,12 +29,15 @@ For Software:
 - Languages used: JavaScript (ES6+), HTML5, CSS3
 - Frameworks used: React 18, Vite 6, Express.js (Node.js)
 - Libraries used: Tailwind CSS, Lucide React, Canvas Confetti, Web Audio API (procedural audio synthesizer)
-- Tools used: Git, GitHub, Node.js, npm, VS Code
+- Tools used: Git, GitHub, Node.js, npm, VS Code,Antigravity
+
 
 For Hardware:
-- List main components: N/A (Pure Software Application for Windows PC / Web)
-- List specifications: Compatible with modern PCs running Windows 10/11, macOS, or Linux with Node.js 18+ and a modern web browser
-- List tools required: Modern Web Browser (Chrome, Edge, Firefox, Brave)
+-[List main components]
+-[List specifications]
+-[List tools required]
+
+
 
 ### Implementation
 For Software:
