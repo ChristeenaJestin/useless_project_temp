@@ -113,7 +113,7 @@ https://useless-project-temp-three-bay.vercel.app/
 
 ## Team Contributions
 - Christeena Jestin: Full-stack architecture, Express local filesystem API, 50/50 astrological fate engine, procedural Web Audio synthesizer, and ritual bypass implementations.
-- Angelina Mary Geo: UI/UX design, AstroLogo sacred geometry, Google Font Outfit integration, cosmic splash loader, and astrological lore curation.
+- Angelina Mary George: UI/UX design, AstroLogo sacred geometry, Google Font Outfit integration, cosmic splash loader, and astrological lore curation.
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
