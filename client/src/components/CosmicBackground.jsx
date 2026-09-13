@@ -60,17 +60,17 @@ export default function CosmicBackground() {
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none">
-      {/* 1. Full-Bleed Solar System Image covering the entire application background */}
+      {/* 1. Full-Bleed Faded Solar System Image covering the entire application background */}
       <img
         src="/solar_system.jpg"
         alt="Solar System Background"
-        className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none opacity-80 filter contrast-115 brightness-105"
+        className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none opacity-35 filter contrast-110 brightness-95 transition-opacity duration-700"
       />
 
-      {/* 2. Delicate translucent cosmic gradient preserving full visibility of the solar system wallpaper */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40 pointer-events-none" />
-      <div className="absolute inset-0 bg-black/20 pointer-events-none" />
-      <div className="absolute inset-0 ambient-nebula opacity-30 pointer-events-none" />
+      {/* 2. Atmospheric Cosmic Void Gradients for smooth fading */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-[#07080d]/40 pointer-events-none" />
+      <div className="absolute inset-0 ambient-nebula opacity-25 pointer-events-none" />
 
       {/* 3. Ambient Twinkling Cosmic Stars */}
       <canvas
