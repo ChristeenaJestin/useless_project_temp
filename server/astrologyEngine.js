@@ -229,28 +229,26 @@ function evaluateAstrologicalGuesses({ fileName, actualBirthtime, actualBytes, g
     sizeScore = Math.max(0, 15 - Math.min(15, (relativeError - 1.0) * 5));
   }
 
-  // Composite Astral Score
-  const compositeScore = Math.round((dateScore * 0.35) + (timeScore * 0.30) + (sizeScore * 0.35));
+  // Equal probability random prediction (50% Lucky / Blessed, 50% Doomed / Unlucky)
+  const isLucky = Math.random() < 0.5;
 
   let tier = "DOOMED";
   let allowed = false;
-  let verdictTitle = "DOOMED: Astral Disconnection";
+  let verdictTitle = "DOOMED: Cosmic Rejection & Astral Curse";
   let message = "";
+  let compositeScore = 0;
 
-  if (compositeScore >= 75) {
+  if (isLucky) {
     tier = "LUCKY";
     allowed = true;
-    verdictTitle = "LUCKY: Seraphic Resonance";
+    verdictTitle = "LUCKY: Seraphic Resonance & Divine Grace";
+    compositeScore = Math.floor(Math.random() * 20) + 80; // 80 - 99%
     message = BLESSINGS[Math.floor(Math.random() * BLESSINGS.length)];
-  } else if (compositeScore >= 40) {
-    tier = "NEUTRAL";
-    allowed = true;
-    verdictTitle = "NEUTRAL: Tepid Spiritual Alignment";
-    message = PASSIVE_AGGRESSIVE_WARNINGS[Math.floor(Math.random() * PASSIVE_AGGRESSIVE_WARNINGS.length)];
   } else {
     tier = "DOOMED";
     allowed = false;
-    verdictTitle = "DOOMED: Cosmic Rejection & Gaslighting";
+    verdictTitle = "DOOMED: Cosmic Rejection & Astral Curse";
+    compositeScore = Math.floor(Math.random() * 25) + 10; // 10 - 35%
     message = GASLIGHTING_CONDEMNATIONS[Math.floor(Math.random() * GASLIGHTING_CONDEMNATIONS.length)];
   }
 
@@ -353,8 +351,8 @@ function divineRandomVerdict({ fileName, actualBirthtime, actualBytes, action })
   const actualDateObj = new Date(actualBirthtime || Date.now());
   const zodiac = getZodiacSign(actualDateObj);
 
-  // 45% Lucky, 55% Doomed
-  const isLucky = Math.random() < 0.45;
+  // 50% Lucky, 50% Doomed (Equal Probability)
+  const isLucky = Math.random() < 0.5;
 
   if (isLucky) {
     const score = Math.floor(Math.random() * 20) + 80; // 80 - 99

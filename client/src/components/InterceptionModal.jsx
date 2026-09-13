@@ -59,6 +59,12 @@ export default function InterceptionModal({
 
   const { file, action } = interception;
 
+  // Form states with default guesses
+  const [guessDate, setGuessDate] = useState('2024-01-01');
+  const [guessTime, setGuessTime] = useState('12:00:00');
+  const [guessSize, setGuessSize] = useState('1024');
+  const [guessSizeUnit, setGuessSizeUnit] = useState('bytes');
+  const [psychicConfidence, setPsychicConfidence] = useState(65);
   const [showOracleHint, setShowOracleHint] = useState(false);
   const [optedForRitual, setOptedForRitual] = useState(false);
 
@@ -115,12 +121,17 @@ export default function InterceptionModal({
     }
   }, [verdictResult]);
 
-  const handleStartDivination = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     soundEffects.playClick();
     setOptedForRitual(false);
     onSubmitInterrogation({
       filePath: file.path,
-      action
+      action,
+      guessDate,
+      guessTime,
+      guessSize: Number(guessSize),
+      guessSizeUnit
     });
   };
 
@@ -268,48 +279,109 @@ export default function InterceptionModal({
         {/* Modal Body */}
         <div className="p-4 sm:p-6 max-h-[82vh] overflow-y-auto space-y-6">
 
-          {/* STAGE 1: CELESTIAL FATE DIVINATION CHAMBER */}
+          {/* STAGE 1: THE PSYCHIC PREDICTION FORM */}
           {!verdictResult && !isSubmitting && (
-            <div className="space-y-5 animate-fade-in">
-              <div className="p-4 rounded-xl bg-astral-purple/10 border border-astral-purple/20 text-xs font-mono text-slate-300 leading-relaxed flex items-start space-x-3.5">
-                <Orbit className="w-5 h-5 text-astral-purple shrink-0 mt-0.5 animate-spin-slow" />
-                <div>
-                  <h3 className="font-bold text-white text-xs sm:text-sm">
-                    Celestial Fate Interrogation Chamber
-                  </h3>
-                  <p className="mt-1 text-slate-300">
-                    To <span className={actionMeta.color}>{action}</span> this file on your PC, you must face the cosmic gatekeeper. The stars will divine whether your aura is <strong>Blessed (Lucky)</strong> or <strong>Condemned (Doomed)</strong>.
-                  </p>
-                </div>
+            <form onSubmit={handleSubmit} className="space-y-5 animate-fade-in">
+              <div className="p-3.5 rounded-xl bg-astral-purple/10 border border-astral-purple/20 text-xs font-mono text-slate-300 leading-relaxed flex items-start space-x-3">
+                <Orbit className="w-4 h-4 text-astral-purple shrink-0 mt-0.5 animate-spin-slow" />
+                <p>
+                  <strong>Celestial Gatekeeper Notice:</strong> To <span className={actionMeta.color}>{action}</span> this file on your PC, you must prove spiritual ownership. Input your psychic predictions of its exact birth coordinates and mass below (the cosmos will divine your fate):
+                </p>
               </div>
 
-              {/* Central Astral Identity Card */}
-              <div className="p-6 rounded-2xl bg-black/40 border border-white/[0.08] flex flex-col items-center justify-center text-center relative overflow-hidden shadow-cosmic-glow">
-                <div className="relative w-24 h-24 rounded-full p-1 border-2 border-amber-500/40 shadow-lucky-glow mb-3">
-                  <img 
-                    src="/solar_system.jpg" 
-                    alt="Solar System Astrolabe" 
-                    className="w-full h-full object-cover rounded-full mix-blend-screen filter contrast-125 animate-spin-slow"
+              {/* Guesses Container */}
+              <div className="space-y-4">
+                {/* Guess 1: Creation Date */}
+                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <label className="text-slate-300 font-semibold flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-sky-400" />
+                      <span>1. Psychic Guess: Exact Creation Date</span>
+                    </label>
+                    <span className="text-[10px] text-slate-500">YYYY-MM-DD</span>
+                  </div>
+                  <input
+                    type="date"
+                    required
+                    value={guessDate}
+                    onChange={(e) => setGuessDate(e.target.value)}
+                    className="w-full bg-black/60 border border-white/[0.1] focus:border-astral-purple rounded-lg px-3 py-2 text-xs font-mono text-white focus:outline-none focus:ring-1 focus:ring-astral-purple/40"
                   />
-                  <div className="absolute inset-0 rounded-full border border-amber-400/50 pointer-events-none" />
                 </div>
 
-                <div className="text-sm font-mono font-bold text-white flex items-center gap-1.5">
-                  <span>Target:</span>
-                  <span className="text-astral-purple">{file.name}</span>
+                {/* Guess 2: Creation Time */}
+                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <label className="text-slate-300 font-semibold flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-amber-400" />
+                      <span>2. Psychic Guess: Exact Creation Time</span>
+                    </label>
+                    <span className="text-[10px] text-slate-500">HH:MM:SS</span>
+                  </div>
+                  <input
+                    type="time"
+                    step="1"
+                    required
+                    value={guessTime}
+                    onChange={(e) => setGuessTime(e.target.value)}
+                    className="w-full bg-black/60 border border-white/[0.1] focus:border-astral-purple rounded-lg px-3 py-2 text-xs font-mono text-white focus:outline-none focus:ring-1 focus:ring-astral-purple/40"
+                  />
                 </div>
 
-                <div className="flex items-center space-x-3 mt-2 text-xs font-mono text-slate-400">
-                  <span className="text-amber-400 font-semibold">{file.astrologicalSign}</span>
-                  <span>•</span>
-                  <span>{file.element}</span>
-                  <span>•</span>
-                  <span className="text-sky-400">{file.planetaryRuler}</span>
+                {/* Guess 3: File Size */}
+                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <label className="text-slate-300 font-semibold flex items-center gap-2">
+                      <HardDrive className="w-4 h-4 text-purple-400" />
+                      <span>3. Psychic Guess: File Size</span>
+                    </label>
+                    <span className="text-[10px] text-slate-500">Bytes, KB, or MB</span>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="number"
+                      min="1"
+                      required
+                      value={guessSize}
+                      onChange={(e) => setGuessSize(e.target.value)}
+                      placeholder="e.g. 2048"
+                      className="flex-1 bg-black/60 border border-white/[0.1] focus:border-astral-purple rounded-lg px-3 py-2 text-xs font-mono text-white focus:outline-none focus:ring-1 focus:ring-astral-purple/40"
+                    />
+                    <select
+                      value={guessSizeUnit}
+                      onChange={(e) => setGuessSizeUnit(e.target.value)}
+                      className="bg-black/60 border border-white/[0.1] focus:border-astral-purple rounded-lg px-3 py-2 text-xs font-mono text-white focus:outline-none focus:ring-1 focus:ring-astral-purple/40"
+                    >
+                      <option value="bytes">Bytes</option>
+                      <option value="KB">KB</option>
+                      <option value="MB">MB</option>
+                    </select>
+                  </div>
                 </div>
 
-                <p className="text-[11px] font-mono text-slate-400 max-w-md mt-2 italic">
-                  "No psychic math or dates required. Let the ancient stars determine your digital fortune."
-                </p>
+                {/* Psychic Confidence Level */}
+                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className="text-slate-400 flex items-center gap-1.5">
+                      <Sliders className="w-3.5 h-3.5 text-astral-purple" />
+                      <span>Psychic Confidence</span>
+                    </span>
+                    <span className="text-astral-purple font-semibold">{psychicConfidence}% Intuitive</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="1"
+                    max="100"
+                    value={psychicConfidence}
+                    onChange={(e) => setPsychicConfidence(Number(e.target.value))}
+                    className="w-full accent-astral-purple cursor-pointer h-1.5 bg-black/40 rounded-lg"
+                  />
+                  <div className="flex justify-between text-[10px] font-mono text-slate-500">
+                    <span>Hazy Vision</span>
+                    <span>Direct Revelation</span>
+                  </div>
+                </div>
               </div>
 
               {/* Optional Oracle Whisper Disclosure */}
@@ -318,7 +390,7 @@ export default function InterceptionModal({
                   <div className="flex items-center space-x-2">
                     <Sparkles className="w-3.5 h-3.5 text-astral-purple animate-pulse" />
                     <span className="text-xs font-mono font-semibold text-purple-300">
-                      Astral Oracle (Optional Lore)
+                      Astral Oracle (Optional Hint)
                     </span>
                   </div>
                   <button
@@ -351,6 +423,9 @@ export default function InterceptionModal({
                       <p className="text-xs font-mono text-purple-200/90 leading-relaxed italic">
                         "{file.oracleClue || oracleHint}"
                       </p>
+                      <div className="text-[9px] font-mono text-slate-500 mt-1">
+                        * Consulting the oracle is purely optional and does not affect your cosmic verdict score.
+                      </div>
                     </div>
                   </div>
                 )}
@@ -367,15 +442,14 @@ export default function InterceptionModal({
                 </button>
 
                 <button
-                  type="button"
-                  onClick={handleStartDivination}
-                  className="px-6 py-2.5 rounded-xl font-mono text-xs font-semibold bg-gradient-to-r from-astral-purple via-astral-fuchsia to-indigo-600 hover:opacity-95 text-white shadow-cosmic-glow transition-all flex items-center gap-2 cursor-pointer"
+                  type="submit"
+                  className="px-5 py-2.5 rounded-xl font-mono text-xs font-semibold bg-gradient-to-r from-astral-purple via-astral-fuchsia to-indigo-600 hover:opacity-95 text-white shadow-cosmic-glow transition-all flex items-center gap-2 cursor-pointer"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>🔮 Divine Astrological Verdict (Lucky or Doomed)</span>
+                  <span>Submit to Astrological Verdict</span>
                 </button>
               </div>
-            </div>
+            </form>
           )}
 
           {/* STAGE 2: LOADING ANIMATION */}
