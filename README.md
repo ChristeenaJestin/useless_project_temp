@@ -110,7 +110,7 @@ For Hardware:
 *Video demonstration showcasing file interception, random cosmic fate evaluation, and the ancient loophole bypass rituals.*
 
 # Additional Demos
-[Add any extra demo materials/links]
+https://useless-project-temp-three-bay.vercel.app/
 
 ## Team Contributions
 - Christeena Jestin: Full-stack architecture, Express local filesystem API, 50/50 astrological fate engine, procedural Web Audio synthesizer, and ritual bypass implementations.
