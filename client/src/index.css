@@ -8,6 +8,11 @@
     color: #e2e8f0;
     overflow: hidden;
     user-select: none;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  }
+
+  code, pre, kbd, samp {
+    font-family: 'Space Mono', 'JetBrains Mono', monospace;
   }
 }
 
