@@ -18,6 +18,7 @@ Modern operating systems are ruthlessly efficient. When you click a file on your
 ### The Solution (that nobody asked for)
 Enter AstroFS—the world's first Astrological File Interceptor. It turns every routine file operation into a dramatic cosmic ritual:
 - **Celestial Gatekeeping**: Every attempt to open a file is held hostage until you consult your inner oracle and submit the file's astrological birth chart.
+- **Mount Real PC Folders for Hosted Apps**: When accessed on hosted web environments (e.g., Vercel, Netlify, Render), users can click **"Mount PC Folder"** to mount any real local Windows directory directly into the browser using the native File System Access API.
 - **Pure 50/50 Cosmic Fate**: No earthly NTFS accuracy required—the celestial arbiter flips a cosmic coin with equal probability (50% Blessed / 50% Doomed).
 - **Yes/No Doom Bypass Dialog**: If cursed with cosmic rejection, decide whether to accept defeat or bypass the doom through ancient developer rituals.
 - **Absurd Loophole Rituals**: Cleanse karmic debt by spatially relocating/renaming the file, compressing into a metamorphic ZIP void and extracting, or outsourcing the curse to a coworker's email address.
@@ -28,8 +29,9 @@ Enter AstroFS—the world's first Astrological File Interceptor. It turns every 
 For Software:
 - Languages used: JavaScript (ES6+), HTML5, CSS3
 - Frameworks used: React 18, Vite 6, Express.js (Node.js)
-- Libraries used: Tailwind CSS, Lucide React, Canvas Confetti, Web Audio API (procedural audio synthesizer)
-- Tools used: Git, GitHub, Node.js, npm, VS Code,Antigravity
+- APIs & Browser Features: Browser File System Access API (`window.showDirectoryPicker`), Webkit Directory API, Web Audio API (procedural audio synthesizer)
+- Libraries used: Tailwind CSS, Lucide React, Canvas Confetti
+- Tools used: Git, GitHub, Node.js, npm, VS Code, Antigravity
 
 
 For Hardware:
@@ -55,6 +57,9 @@ npm run setup
 ```bash
 # Launch both Express backend (port 5000) and Vite client (port 5173) simultaneously
 npm run dev
+
+# Or build client for static cloud hosting (Vercel, Netlify, Render)
+npm run build:client
 ```
 
 ### Project Documentation

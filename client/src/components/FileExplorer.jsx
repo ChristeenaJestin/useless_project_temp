@@ -58,7 +58,8 @@ export default function FileExplorer({
   onSelectFile, 
   onNavigateDir, 
   onInterceptAction,
-  openFilePaths = new Set()
+  openFilePaths = new Set(),
+  onMountLocalFolder
 }) {
   const [filterQuery, setFilterQuery] = useState('');
 
@@ -98,6 +99,15 @@ export default function FileExplorer({
             );
           })}
         </div>
+
+        {/* Mount Real PC Folder CTA */}
+        <button
+          onClick={onMountLocalFolder}
+          className="w-full mt-2 flex items-center justify-center space-x-1.5 py-1.5 px-2 rounded-lg bg-astral-purple/15 hover:bg-astral-purple/25 border border-astral-purple/35 text-purple-200 hover:text-white text-[11px] font-outfit font-medium transition-all shadow-sm cursor-pointer group"
+        >
+          <FolderUp className="w-3.5 h-3.5 text-astral-cyan group-hover:-translate-y-0.5 transition-transform shrink-0" />
+          <span>Mount Real PC Folder</span>
+        </button>
       </div>
 
       {/* Directory Title & Item Count */}

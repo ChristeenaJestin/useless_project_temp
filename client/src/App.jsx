@@ -7,6 +7,14 @@ import CosmicBackground from './components/CosmicBackground';
 import CursorAura from './components/CursorAura';
 import CosmicSplashLoader from './components/CosmicSplashLoader';
 import { soundEffects } from './components/SoundFx';
+import { 
+  pickAndMountLocalFolder, 
+  browseMountedDirectory, 
+  readMountedFileContent, 
+  getSampleAstrologicalFiles,
+  isMountedPath
+} from './utils/localFileSystem';
+import { evaluateClientAstrology } from './utils/astrology';
 
 export default function App() {
   const [currentDir, setCurrentDir] = useState('');
@@ -24,10 +32,27 @@ export default function App() {
   const [verdictResult, setVerdictResult] = useState(null);
   const [showBootLoader, setShowBootLoader] = useState(true);
 
-  // Load real files from PC directory
+  // Load real files from PC directory or mounted local folder
   const loadDirectory = async (dirPath) => {
     setLoading(true);
     try {
+      // 1. If this is a local browser-mounted folder/subfolder, browse client-side handles
+      if (dirPath && isMountedPath(dirPath)) {
+        const mountedData = await browseMountedDirectory(dirPath);
+        if (mountedData) {
+          setCurrentDir(mountedData.currentDir);
+          setParentDir(mountedData.parentDir);
+          setEntries(mountedData.entries || []);
+
+          const firstFile = mountedData.entries?.find(e => !e.isDir);
+          if (firstFile && (!activeFile || !mountedData.entries.some(e => e.path === activeFile.path))) {
+            setActiveFile(firstFile);
+          }
+          return;
+        }
+      }
+
+      // 2. Try fetching from local Express backend
       const url = dirPath ? `/api/browse?dir=${encodeURIComponent(dirPath)}` : '/api/browse';
       const res = await fetch(url);
       if (res.ok) {
@@ -41,11 +66,44 @@ export default function App() {
         if (firstFile && (!activeFile || !data.entries.some(e => e.path === activeFile.path))) {
           setActiveFile(firstFile);
         }
+        return;
       }
     } catch (err) {
-      console.error("Failed to read PC directory", err);
+      console.warn("Backend directory fetch unavailable, checking fallback:", err);
     } finally {
       setLoading(false);
+    }
+
+    // 3. Fallback to sample celestial files if hosted or backend unreachable
+    setEntries(prev => {
+      if (prev.length === 0) {
+        const sample = getSampleAstrologicalFiles();
+        setCurrentDir(sample.currentDir);
+        setParentDir(sample.parentDir);
+        if (sample.entries.length > 0) {
+          setActiveFile(sample.entries[0]);
+        }
+        return sample.entries;
+      }
+      return prev;
+    });
+  };
+
+  // Mount Real PC folder via File System Access API
+  const handleMountLocalFolder = async () => {
+    try {
+      const mounted = await pickAndMountLocalFolder();
+      if (mounted) {
+        setCurrentDir(mounted.currentDir);
+        setParentDir(mounted.parentDir);
+        setEntries(mounted.entries);
+        const firstFile = mounted.entries.find(e => !e.isDir);
+        if (firstFile) {
+          setActiveFile(firstFile);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to mount local folder:", err);
     }
   };
 
@@ -63,7 +121,7 @@ export default function App() {
           }
         }
       } catch (e) {
-        console.warn("Could not load quick locations", e);
+        console.warn("Could not load quick locations from backend", e);
       }
       loadDirectory();
     };
@@ -81,17 +139,71 @@ export default function App() {
   const handleSubmitInterrogation = async (formData) => {
     setIsSubmitting(true);
     const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
+    const targetFile = interception?.file;
+    const isMounted = targetFile?.isLocalMounted;
 
     try {
-      const apiPromise = fetch('/api/interrogate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      }).then(r => r.json());
+      let res;
+      if (isMounted) {
+        // Direct browser-native evaluation for mounted PC files
+        const [, verdict] = await Promise.all([
+          minDelay,
+          Promise.resolve(evaluateClientAstrology({
+            fileName: targetFile.name,
+            birthDate: targetFile.birthDate,
+            sizeBytes: targetFile.size,
+            guessDate: formData.guessDate,
+            guessTime: formData.guessTime,
+            guessSize: formData.guessSize,
+            guessSizeUnit: formData.guessSizeUnit,
+            psychicConfidence: formData.psychicConfidence
+          }))
+        ]);
 
-      const [, res] = await Promise.all([minDelay, apiPromise]);
+        let fileContent = null;
+        if (verdict.allowed && formData.action === 'open') {
+          fileContent = await readMountedFileContent(formData.filePath);
+        }
 
-      if (res.verdict) {
+        res = { verdict, fileContent };
+      } else {
+        // Try backend API first
+        try {
+          const apiPromise = fetch('/api/interrogate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+          }).then(async r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+          });
+
+          const [, apiRes] = await Promise.all([minDelay, apiPromise]);
+          res = apiRes;
+        } catch (apiErr) {
+          // If backend fails (e.g. hosted static web app), evaluate client-side!
+          console.warn("Backend /api/interrogate unreachable, using client astrology engine:", apiErr);
+          const verdict = evaluateClientAstrology({
+            fileName: targetFile?.name || 'file',
+            birthDate: targetFile?.birthDate,
+            sizeBytes: targetFile?.size || 1024,
+            guessDate: formData.guessDate,
+            guessTime: formData.guessTime,
+            guessSize: formData.guessSize,
+            guessSizeUnit: formData.guessSizeUnit,
+            psychicConfidence: formData.psychicConfidence
+          });
+
+          let fileContent = null;
+          if (verdict.allowed && formData.action === 'open') {
+            fileContent = await readMountedFileContent(formData.filePath);
+          }
+
+          res = { verdict, fileContent };
+        }
+      }
+
+      if (res && res.verdict) {
         setVerdictResult(res.verdict);
 
         if (res.verdict.allowed) {
@@ -116,7 +228,7 @@ export default function App() {
         allowed: false,
         verdictTitle: 'DOOMED: Connection Error',
         compositeScore: 0,
-        message: 'Could not connect to the local astrological file engine.',
+        message: 'Could not connect to the astrological file engine.',
         submissionDetails: {
           guessDate: formData.guessDate || 'Unknown',
           guessTime: formData.guessTime || 'Unknown',
@@ -129,17 +241,24 @@ export default function App() {
     }
   };
 
-  const handleBypassSuccess = (bypassData) => {
+  const handleBypassSuccess = async (bypassData) => {
     const { action, result, file } = bypassData;
     const targetPath = result.updatedFilePath || file.path;
 
     // Set verdictResult to the successful bypass verdict
     setVerdictResult(result.verdict);
 
-    if (action === 'open' && result.fileContent) {
+    let content = result.fileContent;
+    if (action === 'open' && !content) {
+      if (file.isLocalMounted || !result.fileContent) {
+        content = await readMountedFileContent(file.path);
+      }
+    }
+
+    if (action === 'open' && content) {
       setOpenFiles(prev => ({
         ...prev,
-        [targetPath]: result.fileContent
+        [targetPath]: content
       }));
     } else if (action === 'close') {
       setOpenFiles(prev => {
@@ -184,6 +303,7 @@ export default function App() {
         onRefresh={() => loadDirectory(currentDir)}
         muted={muted}
         onToggleMute={handleToggleMute}
+        onMountLocalFolder={handleMountLocalFolder}
       />
 
       {/* Clean 2-Column Workspace */}
@@ -199,6 +319,7 @@ export default function App() {
           onNavigateDir={loadDirectory}
           onInterceptAction={handleInterceptAction}
           openFilePaths={openFilePaths}
+          onMountLocalFolder={handleMountLocalFolder}
         />
 
         {/* Right Column: Real File Content Viewer */}

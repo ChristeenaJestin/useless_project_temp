@@ -31,6 +31,7 @@ import {
 import confetti from 'canvas-confetti';
 import { soundEffects } from './SoundFx';
 import AstroLogo from './AstroLogo';
+import { generateClientBypassVerdict } from '../utils/astrology';
 
 const LOADING_STAGES = [
   "Consulting the astral plane...",
@@ -143,16 +144,36 @@ export default function InterceptionModal({
     soundEffects.playClick();
 
     try {
-      const res = await fetch('/api/bypass', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          filePath: file.path,
-          action,
+      let res = null;
+      if (!file?.isLocalMounted && !file?.virtualContent) {
+        try {
+          const apiRes = await fetch('/api/bypass', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              filePath: file.path,
+              action,
+              bypassType,
+              payload
+            })
+          });
+          if (apiRes.ok) {
+            res = await apiRes.json();
+          }
+        } catch (e) {
+          // Backend not reachable on hosted URL
+        }
+      }
+
+      // If backend not present or local file, generate client bypass verdict in-browser
+      if (!res || !res.verdict) {
+        const clientVerdict = generateClientBypassVerdict({
           bypassType,
+          fileName: file.name,
           payload
-        })
-      }).then(r => r.json());
+        });
+        res = { verdict: clientVerdict, bypassed: true };
+      }
 
       if (res.verdict) {
         soundEffects.playBypassChime();

@@ -8,7 +8,8 @@ import {
   Monitor, 
   Download, 
   HardDrive,
-  Check
+  Check,
+  FolderUp
 } from 'lucide-react';
 import AstroLogo from './AstroLogo';
 
@@ -25,7 +26,8 @@ export default function Header({
   onChangeDir, 
   onRefresh, 
   muted, 
-  onToggleMute 
+  onToggleMute,
+  onMountLocalFolder
 }) {
   const [isEditingPath, setIsEditingPath] = useState(false);
   const [inputPath, setInputPath] = useState(currentDir || '');
@@ -114,6 +116,15 @@ export default function Header({
 
       {/* Right Controls */}
       <div className="flex items-center space-x-2 shrink-0">
+        <button
+          onClick={onMountLocalFolder}
+          title="Mount any folder from your Windows PC in your browser"
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-outfit font-medium bg-gradient-to-r from-astral-purple/20 via-astral-fuchsia/15 to-astral-cyan/20 hover:from-astral-purple/35 hover:to-astral-cyan/35 text-purple-200 hover:text-white border border-astral-purple/40 shadow-sm transition-all cursor-pointer group shrink-0"
+        >
+          <FolderUp className="w-3.5 h-3.5 text-astral-cyan group-hover:scale-110 transition-transform" />
+          <span className="hidden sm:inline">Mount PC Folder</span>
+        </button>
+
         <button
           onClick={onRefresh}
           title="Refresh Directory"
