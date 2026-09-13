@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    background-color: #07080d;
+    background-color: #06070b;
     color: #e2e8f0;
     overflow: hidden;
     user-select: none;
@@ -18,24 +18,24 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(11, 13, 20, 0.6);
+  background: rgba(11, 13, 20, 0.4);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.25);
+  background: rgba(139, 92, 246, 0.3);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.45);
+  background: rgba(139, 92, 246, 0.5);
 }
 
 /* Glassmorphic card styling */
 .glass-panel {
-  background: rgba(16, 19, 28, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(11, 14, 24, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-panel-interactive {

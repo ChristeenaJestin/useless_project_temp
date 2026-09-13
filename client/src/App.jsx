@@ -4,6 +4,7 @@ import FileExplorer from './components/FileExplorer';
 import FileViewer from './components/FileViewer';
 import InterceptionModal from './components/InterceptionModal';
 import CosmicBackground from './components/CosmicBackground';
+import CursorAura from './components/CursorAura';
 import { soundEffects } from './components/SoundFx';
 
 export default function App() {
@@ -147,9 +148,12 @@ export default function App() {
   const openFilePaths = new Set(Object.keys(openFiles));
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-obsidian-950 text-slate-200 overflow-hidden font-sans relative">
-      {/* Animated Cosmic Background with Faded Zodiac Astrolabe, Twinkling Stars & Meteors */}
+    <div className="h-screen w-screen flex flex-col bg-transparent text-slate-200 overflow-hidden font-sans relative">
+      {/* 1. Full-bleed background image covering the entire application */}
       <CosmicBackground />
+
+      {/* 2. Top-level Shining Cursor Aura following mouse across all panels */}
+      <CursorAura />
 
       {/* Header Bar */}
       <Header

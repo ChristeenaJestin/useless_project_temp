@@ -24,18 +24,13 @@ export default function FileViewer({
 }) {
   if (!file) {
     return (
-      <main className="flex-1 h-full flex flex-col items-center justify-center p-8 bg-obsidian-900 bg-cosmic-grid relative text-center overflow-hidden">
-        {/* Ambient Large Blended Solar System Astrolabe */}
-        <div className="absolute w-[500px] h-[500px] pointer-events-none opacity-25 mix-blend-screen [mask-image:radial-gradient(circle_at_center,black_50%,transparent_90%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_50%,transparent_90%)]">
-          <img src="/solar_system.jpg" alt="" className="w-full h-full object-cover filter contrast-125" />
-        </div>
-
+      <main className="flex-1 h-full flex flex-col items-center justify-center p-8 bg-transparent relative text-center overflow-hidden">
         <div className="relative z-10 flex flex-col items-center">
-          <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center mb-4 text-slate-600 shadow-cosmic-glow">
-            <Compass className="w-7 h-7 text-astral-purple/70 animate-spin-slow" />
+          <div className="w-16 h-16 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center mb-4 text-slate-300 shadow-cosmic-glow">
+            <Compass className="w-8 h-8 text-astral-purple animate-spin-slow" />
           </div>
-          <h3 className="text-sm font-mono font-semibold text-slate-200">No File Selected</h3>
-          <p className="text-xs font-mono text-slate-400 max-w-sm mt-1 leading-relaxed">
+          <h3 className="text-sm font-mono font-semibold text-slate-100">No File Selected</h3>
+          <p className="text-xs font-mono text-slate-300 max-w-sm mt-1.5 leading-relaxed">
             Select any real file from your PC in the left explorer to inspect its spiritual structure or initiate a psychic file operation.
           </p>
         </div>
@@ -44,7 +39,7 @@ export default function FileViewer({
   }
 
   return (
-    <main className="flex-1 h-full flex flex-col bg-obsidian-900 overflow-hidden relative">
+    <main className="flex-1 h-full flex flex-col bg-transparent overflow-hidden relative">
       {/* File Action & Breadcrumb Bar */}
       <div className="h-12 px-4 border-b border-white/[0.08] glass-panel flex items-center justify-between shrink-0">
         <div className="flex items-center space-x-2.5 min-w-0">
@@ -109,7 +104,7 @@ export default function FileViewer({
       </div>
 
       {/* File Astrological Identity Strip */}
-      <div className="px-4 py-2 bg-obsidian-950/80 border-b border-white/[0.04] text-[11px] font-mono flex items-center justify-between text-slate-400 shrink-0">
+      <div className="px-4 py-2 bg-black/30 backdrop-blur-md border-b border-white/[0.06] text-[11px] font-mono flex items-center justify-between text-slate-400 shrink-0">
         <div className="flex items-center space-x-4">
           <span><strong className="text-slate-300">Zodiac Sign:</strong> {file.astrologicalSign}</span>
           <span><strong className="text-slate-300">Element:</strong> {file.element}</span>
@@ -125,27 +120,25 @@ export default function FileViewer({
       <div className="flex-1 overflow-y-auto p-6">
         {!isOpen && (
           <div className="h-full flex flex-col items-center justify-center p-8 text-center animate-fade-in">
-            {/* Larger, Seamlessly Blended Solar System Planetary Centerpiece */}
-            <div className="relative w-72 h-72 md:w-84 md:h-84 mb-6 flex items-center justify-center group">
-              {/* Pulsing Ambient Solar Core */}
-              <div className="absolute inset-4 rounded-full bg-gradient-to-tr from-amber-500/25 via-purple-600/20 to-cyan-500/20 blur-3xl animate-pulse-slow pointer-events-none" />
+            {/* Celestial Holographic Seal with Orbit Rings */}
+            <div className="relative w-64 h-64 mb-6 flex items-center justify-center group">
+              {/* Pulsing Ambient Solar & Nebula Glow */}
+              <div className="absolute inset-2 rounded-full bg-gradient-to-tr from-amber-500/20 via-purple-600/25 to-cyan-500/20 blur-2xl animate-pulse-slow pointer-events-none" />
               
               {/* Concentric Subtle Orbit Rings */}
-              <div className="absolute inset-0 rounded-full border border-astral-purple/30 animate-pulse pointer-events-none" />
-              <div className="absolute inset-6 rounded-full border border-amber-400/20 border-dashed animate-spin-slow pointer-events-none" />
-              <div className="absolute inset-12 rounded-full border border-cyan-400/15 pointer-events-none" />
+              <div className="absolute inset-0 rounded-full border border-astral-purple/40 animate-spin-slow pointer-events-none" />
+              <div className="absolute inset-4 rounded-full border border-amber-400/30 border-dashed animate-pulse pointer-events-none" />
+              <div className="absolute inset-8 rounded-full border border-cyan-400/20 pointer-events-none" />
+              <div className="absolute inset-14 rounded-full border border-purple-400/25 border-dotted pointer-events-none" />
 
-              {/* The Seamless Solar System Image */}
-              <div className="relative w-full h-full rounded-full overflow-hidden [mask-image:radial-gradient(circle_at_center,black_58%,transparent_96%)] [-webkit-mask-image:radial-gradient(circle_at_center,black_58%,transparent_96%)]">
-                <img 
-                  src="/solar_system.jpg" 
-                  alt="Solar System Chart" 
-                  className="w-full h-full object-cover mix-blend-screen filter contrast-125 brightness-110 transform transition-transform duration-700 group-hover:scale-105"
-                />
+              {/* Center Seal Emblem */}
+              <div className="relative z-10 w-24 h-24 rounded-full bg-black/50 backdrop-blur-xl border border-amber-500/40 shadow-cosmic-glow flex flex-col items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                <Lock className="w-8 h-8 text-amber-300 animate-pulse" />
+                <span className="text-[9px] font-mono font-bold text-amber-200 mt-1 uppercase tracking-widest">SEALED</span>
               </div>
 
               {/* Astrological Sign Badge */}
-              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-obsidian-900/90 border border-amber-500/40 text-xs font-mono text-white whitespace-nowrap shadow-cosmic-glow flex items-center gap-2 z-10 backdrop-blur-md">
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-black/70 border border-amber-500/40 text-xs font-mono text-white whitespace-nowrap shadow-cosmic-glow flex items-center gap-2 z-20 backdrop-blur-md">
                 <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
                 <span>Zodiac: <strong className="text-amber-300">{file.astrologicalSign}</strong> ({file.element})</span>
               </div>
@@ -154,8 +147,8 @@ export default function FileViewer({
             <h2 className="text-base font-mono font-bold text-white tracking-wide">
               File Shrouded by Astrological Interceptor
             </h2>
-            <p className="text-xs font-mono text-slate-400 max-w-md mt-2 leading-relaxed">
-              The bytes of <code className="text-astral-purple font-semibold">{file.name}</code> are locked under the stars of <strong className="text-slate-200">{file.astrologicalSign}</strong>. Prove your psychic synchronization to inspect its contents.
+            <p className="text-xs font-mono text-slate-300 max-w-md mt-2 leading-relaxed">
+              The bytes of <code className="text-astral-purple font-semibold">{file.name}</code> are locked under the stars of <strong className="text-amber-300">{file.astrologicalSign}</strong>. Prove your psychic synchronization to inspect its contents.
             </p>
             <button
               onClick={() => {
@@ -171,7 +164,7 @@ export default function FileViewer({
         )}
 
         {isOpen && fileContent && (
-          <div className="w-full max-w-5xl mx-auto rounded-xl border border-white/[0.08] bg-obsidian-950/90 overflow-hidden shadow-2xl">
+          <div className="w-full max-w-5xl mx-auto rounded-xl border border-white/10 bg-black/60 backdrop-blur-xl overflow-hidden shadow-2xl">
             {fileContent.isImage ? (
               <div className="p-6 flex flex-col items-center justify-center">
                 <img 
